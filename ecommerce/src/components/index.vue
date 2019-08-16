@@ -1,18 +1,18 @@
 <template>
   <div class="vh-100">
       <carousel></carousel>
-      <indexfooter></indexfooter>
+      <IndexFooter></IndexFooter>
   </div>
 </template>
 
 <script>
-import indexfooter from './indexFooter'
-import carousel from './swiper'
+import IndexFooter from './IndexFooter'
+import carousel from './Swiper'
 export default {
   name: 'index',
   components: {
     carousel,
-    indexfooter
+    IndexFooter
   }
 }
 </script>

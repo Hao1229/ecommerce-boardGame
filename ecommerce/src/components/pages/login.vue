@@ -37,7 +37,11 @@ export default {
       const vm = this
       vm.isLoading = true
       this.$http.post(api, vm.user).then((response) => {
-        console.log(response.data)
+        if (response.data.success) {
+          this.$router.push('/admin')
+        } else {
+          alert('登入資料有誤')
+        }
         vm.isLoading = false
       })
     }
