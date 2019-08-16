@@ -8,7 +8,7 @@
             <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
         </loading>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <router-link class="navbar-brand" to="/main">桌迷藏</router-link>
+            <router-link class="navbar-brand" to="/main"><i class="fas fa-chess-knight mr-2"></i>桌迷藏</router-link>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

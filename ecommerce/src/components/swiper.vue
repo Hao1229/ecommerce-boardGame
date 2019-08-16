@@ -7,7 +7,7 @@
     </swiper>
     <div class="jumbotron jumbotron-fluid position-absolute jumbotronSet">
       <div class="container">
-        <h1 class="display-4 font-weight-bold">桌迷藏</h1>
+        <h1 class="display-4 font-weight-bold"><i class="fas fa-chess-knight mr-2"></i>桌迷藏</h1>
         <p class="lead">在充滿電子產品的時代，我們渴望讓大家發現
           <span class="text-secondary font-weight-bold">桌遊</span>
           的美好，並為其深深
@@ -40,6 +40,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    @import url("@fortawesome/fontawesome-free/css/all.css");
     .bgImg1{
         background-image: url('https://i.imgur.com/Eo93EbF.jpg');
         background-position: center center;

@@ -33,14 +33,7 @@ export default new Router({
       path: '/admin',
       name: 'dashBoard',
       component: DashBoard,
-      meta: { requiresAuth: true },
       children: [
-        {
-          path: '',
-          name: 'home',
-          component: Home,
-          meta: { requiresAuth: true }
-        },
         {
           path: 'home',
           name: 'home',

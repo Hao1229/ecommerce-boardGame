@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div :class="{'vh-100':products.length<8}">
       <loading :active.sync="isLoading" :is-full-page="true">
         <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
         <template slot="default">
@@ -8,38 +8,41 @@
         <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
       </loading>
        <div class="d-flex">
-           <button class="btn btn-dark mt-2 ml-auto" @click.prevent="openModel">新增新產品<i class="fas fa-plus ml-2"></i></button>
+           <button class="btn btn-dark mt-2 ml-auto" @click.prevent="openModel(true)">新增新商品<i class="fas fa-plus ml-2"></i></button>
        </div>
        <div class="table-responsive">
         <table class="table mt-3">
             <thead class="thead-light">
                 <tr>
                 <th>分類</th>
-                <th>產品</th>
-                <th>原價</th>
-                <th>售價</th>
-                <th>是否啟用</th>
-                <th>編輯</th>
+                <th>商品</th>
+                <th width="160">原價</th>
+                <th width="160">售價</th>
+                <th width="140">是否啟用</th>
+                <th width="120">編輯</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                <td>Mark</td>
-                <td>Mark</td>
-                <td>Mark</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <tr v-for="item in products" :key="item.id">
+                <td>{{item.category}}</td>
+                <td>{{item.title}}</td>
+                <td class="text-right">{{item.origin_price | currency}}</td>
+                <td class="text-right">{{item.price | currency}}</td>
+                <td class="text-muted" v-if="!item.is_enabled">未啟用</td>
+                <td class="text-success" v-if="item.is_enabled">已啟用</td>
+                <td><button class="btn btn-dark btn-sm" @click="openModel(false, item)">編輯</button>
+                <button class="btn btn-danger btn-sm" @click="opendelModel(item)">刪除</button>
+                </td>
                 </tr>
             </tbody>
         </table>
        </div>
-        <!-- 新增產品Modal -->
+        <!-- 新增商品Modal -->
         <div class="modal fade bd-example-modal-lg" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
             <div class="modal-header bg-dark">
-                <h5 class="modal-title text-white" id="productModalLabel">新增產品</h5>
+                <h5 class="modal-title text-white" id="productModalLabel">新增商品</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="text-white">&times;</span>
                 </button>
@@ -53,7 +56,7 @@
                         <div class="col-md-6">
                             <form>
                                 <div class="form-group">
-                                    <label for="productName">產品名稱</label>
+                                    <label for="productName">商品名稱</label>
                                     <input type="text" class="form-control" id="productName" placeholder="請輸入產品名稱" v-model="tempProduct.title">
                                 </div>
                                 <div class="form-group row">
@@ -86,11 +89,11 @@
                                 </div>
                                 <hr/>
                                 <div class="form-group">
-                                    <label for="describe">產品敘述</label>
+                                    <label for="describe">商品敘述</label>
                                     <textarea name="describe" id="describe" type="text" class="form-control" placeholder="請輸入產品敘述" v-model="tempProduct.description"></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="content">產品說明內容</label>
+                                    <label for="content">商品說明內容</label>
                                     <textarea name="content" id="content" type="text" class="form-control" placeholder="請輸入產品內容" v-model="tempProduct.content"></textarea>
                                 </div>
                             </form>
@@ -111,30 +114,96 @@
             </div>
         </div>
         </div>
+        <!-- 刪除商品Model -->
+        <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white" id="delModalLabel">刪除商品</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span class="text-danger">刪除的商品將無法復原，確定刪除？</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" @click="delProduct">確認</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- 頁碼標示 -->
+        <Pagination :getPagination="pagination" @changePage = 'getProduct'></Pagination>
    </div>
 </template>
 
 <script>
 import $ from 'jquery'
+import Pagination from '@/components/Pagination'
 export default {
+  components: {
+    Pagination
+  },
   data () {
     return {
       tempProduct: {},
-      isLoading: false
+      products: [],
+      isLoading: false,
+      pagination: {},
+      isNew: ''
     }
   },
   methods: {
     updateProduct () {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product`
-      const vm = this
-      this.$http.post(api, {data: vm.tempProduct}).then((response) => {
-        console.log(response.data)
+      let api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product`
+      let vm = this
+      let apiMethod = 'post'
+      if (!vm.isNew) {
+        api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${vm.tempProduct.id}`
+        apiMethod = 'put'
+      }
+      this.$http[apiMethod](api, {data: vm.tempProduct}).then((response) => {
         $('#productModal').modal('hide')
+        vm.getProduct()
       })
     },
-    openModel () {
+    getProduct (page = 1) {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/products?page=${page}`
+      const vm = this
+      vm.isLoading = true
+      this.$http.get(api).then((response) => {
+        vm.products = response.data.products
+        vm.pagination = response.data.pagination
+        vm.isLoading = false
+      })
+    },
+    delProduct () {
+      const vm = this
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${vm.tempProduct.id}`
+      this.$http.delete(api).then((response) => {
+        $('#delModal').modal('hide')
+      })
+      vm.updateProduct()
+    },
+    openModel (isNew, item) {
+      const vm = this
       $('#productModal').modal('show')
+      if (isNew) {
+        vm.tempProduct = {}
+      } else {
+        vm.tempProduct = Object.assign({}, item)
+      }
+    },
+    opendelModel (item) {
+      $('#delModal').modal('show')
+      const vm = this
+      vm.tempProduct = Object.assign({}, item)
     }
+  },
+  created () {
+    this.getProduct()
   }
 }
 </script>
