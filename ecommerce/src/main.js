@@ -12,6 +12,7 @@ import 'bootstrap'
 import router from './router'
 import currencyFilter from './filters/currency'
 import dateFilter from './filters/date'
+import './bus'
 
 axios.defaults.withCredentials = true
 

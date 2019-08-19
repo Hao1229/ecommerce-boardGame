@@ -51,7 +51,11 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-6 mb-2">
-                            <input type="file">
+                            <input type="file" class="mb-3" @change="uploadImg" ref="files">
+                            <label for="imageRouter">圖片網址</label>
+                            <input type="text" id="imageRouter" v-model="tempProduct.imageUrl">
+                             <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.uploadingImg"></i>
+                            <img :src="tempProduct.imageUrl" class="mt-3 img-fluid">
                         </div>
                         <div class="col-md-6">
                             <form>
@@ -152,7 +156,10 @@ export default {
       products: [],
       isLoading: false,
       pagination: {},
-      isNew: ''
+      isNew: '',
+      loadingStatus: {
+        uploadingImg: false
+      }
     }
   },
   methods: {
@@ -187,13 +194,36 @@ export default {
       })
       vm.updateProduct()
     },
+    uploadImg () {
+      const uploadFile = this.$refs.files.files[0]
+      const formData = new FormData()
+      formData.append('file-to-upload', uploadFile)
+      const vm = this
+      vm.loadingStatus.uploadingImg = true
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/upload`
+      this.$http.post(api, formData, {
+        headers: {
+          'Content-type': 'multipart/form-data'
+        }
+      }).then((response) => {
+        if (response.data.success) {
+          vm.$set(vm.tempProduct, 'imageUrl', response.data.imageUrl)
+          vm.loadingStatus.uploadingImg = false
+        } else {
+          this.$bus.$emit('message:push', response.data.message, 'danger')
+          vm.loadingStatus.uploadingImg = false
+        }
+      })
+    },
     openModel (isNew, item) {
       const vm = this
       $('#productModal').modal('show')
       if (isNew) {
         vm.tempProduct = {}
+        vm.isNew = true
       } else {
         vm.tempProduct = Object.assign({}, item)
+        vm.isNew = false
       }
     },
     opendelModel (item) {
