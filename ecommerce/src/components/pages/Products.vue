@@ -25,7 +25,7 @@
             <tbody>
                 <tr v-for="item in products" :key="item.id">
                 <td>{{item.category}}</td>
-                <td>{{item.title}}</td>
+                <td><img :src="item.imageUrl" class="iconImg mr-2">{{item.title}}</td>
                 <td class="text-right">{{item.origin_price | currency}}</td>
                 <td class="text-right">{{item.price | currency}}</td>
                 <td class="text-muted" v-if="!item.is_enabled">未啟用</td>
@@ -240,4 +240,8 @@ export default {
 
 <style lang="scss" scoped>
     @import url("@fortawesome/fontawesome-free/css/all.css");
+    .iconImg{
+      width: 50px;
+      height: 50px;
+    }
 </style>

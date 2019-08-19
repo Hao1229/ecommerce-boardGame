@@ -24,7 +24,7 @@
                     <a class="nav-link" href="#">訂單</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">優惠卷</a>
+                    <router-link class="nav-link" active-class="active" to="/admin/coupons">優惠卷</router-link>
                 </li>
                 </ul>
                 <button class="btn btn-light ml-auto" @click="signoutAdmin">登出</button>
