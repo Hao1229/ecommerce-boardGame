@@ -7,6 +7,7 @@ import DashBoard from '@/components/DashBoard'
 import Home from '@/components/pages/AdminHome'
 import Product from '@/components/pages/Products'
 import Coupon from '@/components/pages/Coupon'
+import Orders from '@/components/pages/Orders'
 Vue.use(Router)
 
 export default new Router({
@@ -51,6 +52,12 @@ export default new Router({
           path: 'coupons',
           name: 'coupons',
           component: Coupon,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'orders',
+          name: 'orders',
+          component: Orders,
           meta: { requiresAuth: true }
         }
       ]

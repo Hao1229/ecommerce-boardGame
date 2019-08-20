@@ -21,7 +21,7 @@
                   <router-link class="nav-link" active-class="active" to="/admin/products">產品</router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">訂單</a>
+                  <router-link class="nav-link" active-class="active" to="/admin/orders">訂單</router-link>
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link" active-class="active" to="/admin/coupons">優惠卷</router-link>

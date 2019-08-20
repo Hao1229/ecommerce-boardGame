@@ -1,0 +1,161 @@
+<template>
+    <div class="min-vh-100">
+        <loading :active.sync="isLoading" :is-full-page="true">
+            <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
+            <template slot="default">
+            <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
+            </template>
+            <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
+        </loading>
+        <div class="d-flex">
+           <div class="dropdown ml-auto mt-2">
+                <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    條件篩選
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <div class="form-check m-2">
+                    <input class="form-check-input" type="radio" name="paidRadios" id="allRadios" value='all' checked v-model="selectOption">
+                    <label class="form-check-label" for="allRadios">
+                       全部
+                    </label>
+                  </div>
+                  <div class="form-check m-2">
+                    <input class="form-check-input" type="radio" name="paidRadios" id="paidRadios" value="paid" v-model="selectOption">
+                    <label class="form-check-label text-success" for="paidRadios">
+                        已付款
+                    </label>
+                  </div>
+                  <div class="form-check m-2">
+                    <input class="form-check-input" type="radio" name="paidRadios" id="unpaidRadios" value="nopaid" v-model="selectOption">
+                    <label class="form-check-label text-muted" for="unpaidRadios">
+                        未付款
+                    </label>
+                  </div>
+                </div>
+            </div>
+       </div>
+        <div class="table-responsive">
+            <table class="table mt-3">
+                <thead class="thead-light">
+                    <tr>
+                    <th width="120">顧客姓名</th>
+                    <th>購買產品</th>
+                    <th width="130">總金額</th>
+                    <th width='110'>購買日期</th>
+                    <th width="100">是否付款</th>
+                    <th width="100">詳細資料</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in selectOrders" :key="item.id">
+                    <td>{{item.user.name}}</td>
+                    <td v-for="(product, i) in item.products" :key="i" class="d-flex flex-column">
+                        {{product.product.title}} 數量：{{product.product.num}} {{product.product.unit}}
+                    </td>
+                    <td class="text-right">{{item.total | currency}}</td>
+                    <td>{{item.paid_date | date}}</td>
+                    <td class="text-muted" v-if="!item.is_paid">未付款</td>
+                    <td class="text-success" v-if="item.is_paid">已付款</td>
+                    <td><button class="btn btn-dark btn-sm" @click="openModel(item)">資料確認</button></td>
+                    </tr>
+                </tbody>
+            </table>
+       </div>
+       <!-- 詳細資料 Model -->
+       <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderModalLabel">顧客詳細資料</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                     <div class="form-group">
+                        <label for="buyer">購買人</label>
+                        <input type="text" class="form-control" id="buyer" readonly v-model="tempUser.name">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">地址</label>
+                        <input type="text" class="form-control" id="address" readonly v-model="tempUser.address">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">連絡電話</label>
+                        <input type="tel" class="form-control" id="phone" readonly v-model="tempUser.tel">
+                    </div>
+                    <div class="form-group">
+                        <label for="mail">電子信箱</label>
+                        <input type="email" class="form-control" id="mail" readonly v-model="tempUser.email">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">確認</button>
+                </div>
+                </div>
+            </div>
+        </div>
+         <!-- 頁碼標示 -->
+        <Pagination :getPagination="pagination" @changePage = 'getOrders'></Pagination>
+    </div>
+</template>
+
+<script>
+import $ from 'jquery'
+import Pagination from '@/components/Pagination'
+export default {
+  components: {
+    Pagination
+  },
+  data () {
+    return {
+      orders: [],
+      tempUser: {},
+      isLoading: false,
+      pagination: {},
+      selectOption: 'all'
+    }
+  },
+  methods: {
+    getOrders (page = 1) {
+      const vm = this
+      vm.isLoading = true
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/orders?page=${page}`
+      this.$http.get(api).then((response) => {
+        vm.orders = response.data.orders
+        vm.pagination = response.data.pagination
+        vm.isLoading = false
+        console.log(vm.pagination)
+      })
+    },
+    openModel (item) {
+      $('#orderModal').modal('show')
+      const vm = this
+      vm.tempUser = Object.assign({}, item.user)
+    }
+  },
+  created () {
+    this.getOrders()
+  },
+  computed: {
+    selectOrders () {
+      const vm = this
+      if (vm.selectOption === 'all') {
+        return vm.orders
+      } else if (vm.selectOption === 'paid') {
+        return vm.orders.filter((item) => {
+          return item.is_paid
+        })
+      } else if (vm.selectOption === 'nopaid') {
+        return vm.orders.filter((item) => {
+          return !item.is_paid
+        })
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import url("@fortawesome/fontawesome-free/css/all.css");
+</style>

@@ -1,5 +1,5 @@
 <template>
-   <div :class="{'vh-100':products.length<8}">
+   <div class="min-vh-100">
       <loading :active.sync="isLoading" :is-full-page="true">
         <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
         <template slot="default">
