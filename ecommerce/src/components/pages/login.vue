@@ -7,6 +7,9 @@
         </template>
         <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
     </loading>
+    <div class="text-center mb-2">
+       <router-link to="/main" class="h2"><i class="fas fa-chess-knight mr-2"></i>桌迷藏</router-link>
+    </div>
      <div class="text-center">
         <form class="form-signin" @submit.prevent="loginAdmin">
           <h1 class="h3 mb-3 font-weight-bold text-primary">後 台 登 入</h1>
