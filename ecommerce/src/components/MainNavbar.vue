@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="fixed-top">
       <div class="d-flex justify-content-between align-items-center navbarBg">
           <router-link to="/" class="text-primary navbarIcon ml-3 h3 my-2"><i class="fas fa-chess-knight mr-2"></i>桌迷藏</router-link>
           <!-- 漢堡選單icon -->
@@ -10,7 +10,7 @@
                   <router-link to="/login" class="mainNavbarBtn pt-2 h5"><i class="fas fa-user mr-2"></i>後台登入</router-link>
               </li>
                <li class="position-relative" @mouseleave="couponHide">
-                    <div class="bg-primary couponTable d-none" :class="{'p-4':tempCoupons.length === 0}" @mouseleave="couponHide">
+                    <div class="couponTable d-none bg-primary" :class="{'p-4':tempCoupons.length === 0}" @mouseleave="couponHide">
                       <span class="h5 text-white text-nowrap" v-if="tempCoupons.length === 0">您尚未有任何優惠卷</span>
                       <table class="table" v-if="tempCoupons.length > 0">
                         <thead>
@@ -266,7 +266,7 @@ export default {
 <style lang="scss" scoped>
     @import url("@fortawesome/fontawesome-free/css/all.css");
     .navbarBg{
-        background-color: rgba($color: #DCDCDC, $alpha: 0.8)
+        background-color: rgba($color: #DCDCDC, $alpha: 0.9)
     }
     .mainNavbarBtn{
         position: relative;
@@ -347,7 +347,8 @@ export default {
     }
     .productTable{
         position: absolute;
-        top: 42px;
+        top: 45px;
+        z-index: 999;
            &::before{
                 content: '';
                 position: absolute;
@@ -362,7 +363,8 @@ export default {
     }
     .cartTable{
         position: absolute;
-        top: 40px;
+        top: 45px;
+        z-index: 999;
            &::before{
                 content: '';
                 position: absolute;
@@ -377,7 +379,8 @@ export default {
     }
     .couponTable{
         position: absolute;
-        top: 40px;
+        top: 45px;
+        z-index: 999;
            &::before{
                 content: '';
                 position: absolute;

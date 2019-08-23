@@ -1,14 +1,17 @@
 <template>
     <div>
         <Navbar></Navbar>
+        <Content></Content>
     </div>
 </template>
 
 <script>
 import Navbar from './MainNavbar'
+import Content from './MainContent'
 export default {
   components: {
-    Navbar
+    Navbar,
+    Content
   }
 }
 </script>
