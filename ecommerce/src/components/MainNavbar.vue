@@ -354,10 +354,9 @@ export default {
                 position: absolute;
                 top: -23px;
                 left: 20%;
-                background: white;
                 height: 0;
                 width:0;
-                border: rgba($color: #DCDCDC, $alpha: 0.8) 12px solid;
+                border: transparent 12px solid;
                 border-bottom: #ae0000 12px solid;
             }
     }
@@ -370,10 +369,9 @@ export default {
                 position: absolute;
                 top: -23px;
                 left: 20%;
-                background: white;
                 height: 0;
                 width:0;
-                border: rgba($color: #DCDCDC, $alpha: 0.8) 12px solid;
+                border: transparent 12px solid;
                 border-bottom: #ae0000 12px solid;
             }
     }
@@ -386,10 +384,9 @@ export default {
                 position: absolute;
                 top: -23px;
                 left: 20%;
-                background: white;
                 height: 0;
                 width:0;
-                border: rgba($color: #DCDCDC, $alpha: 0.8) 12px solid;
+                border: transparent 12px solid;
                 border-bottom: #ae0000 12px solid;
             }
     }
