@@ -1,5 +1,12 @@
 <template>
   <div>
+     <loading :active.sync="isLoading" :is-full-page="true">
+        <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
+        <template slot="default">
+          <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
+        </template>
+        <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
+    </loading>
     <div class="contentBg min-vh-100 d-flex justify-content-center align-items-center">
         <div>
           <img src="https://i.imgur.com/HXIW7B2.png" class="logo">
@@ -30,14 +37,71 @@
                 </div>
             </div>
         </div>
-        <div class="mt-5 text-center d-flex align-items-center">
+        <div>
+          <div class="mt-5 text-center d-flex align-items-center">
             <div class="bg-dark flex-fill" style="height:2px"></div>
             <h3 class="border border-dark p-2">熱門商品</h3>
             <div class="bg-dark flex-fill" style="height:2px"></div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-4 position-relative" v-for="item in productHot" :key="item.id">
+              <img :src="item.imageUrl" class="h-75 w-100">
+              <div class="h4 text-center w-100 mt-2">{{item.title}}</div>
+              <div class="text-center">
+                <span class="h5" v-if="!item.price">NT{{item.origin_price | currency}}</span>
+                <span class="h5 text-muted" v-if="item.price"><s>NT{{item.origin_price | currency}}</s></span>
+                <span class="h5 ml-1" v-if="item.price">NT{{item.price | currency}}</span>
+              </div>
+              <div class="addtoCart p-2 d-none d-md-block" @click="addtoCart(item.id)">
+                <i class="fas fa-cart-plus fa-3x"></i>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
   </div>
 </template>
+
+<script>
+// import $ from 'jquery'
+export default {
+  data () {
+    return {
+      productAll: [],
+      productHot: [],
+      isLoading: false
+    }
+  },
+  methods: {
+    getProducts () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
+      const vm = this
+      this.$http.get(api).then((response) => {
+        vm.productAll = response.data.products
+        vm.productHot = vm.productAll.filter((item, i) => {
+          return i < 3
+        })
+      })
+    },
+    addtoCart (id) {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const vm = this
+      const product = {
+        'product_id': id,
+        'qty': '1'
+      }
+      vm.isLoading = true
+      this.$http.post(api, {data: product}).then((response) => {
+        vm.isLoading = false
+        vm.$bus.$emit('update:cart')
+      })
+    }
+  },
+  created () {
+    this.getProducts()
+  }
+}
+</script>
 
 <style lang="scss" scoped>
      @import url("@fortawesome/fontawesome-free/css/all.css");
@@ -75,4 +139,18 @@
             opacity: 0.5;
          }
      }
+     .liststyleNone{
+        list-style-type: none
+    }
+    .addtoCart{
+      position: absolute;
+      top: 63%;
+      left: 3%;
+      background-color: rgba($color: white, $alpha: 0.8);
+      transition: all .5s;
+      cursor: pointer;
+      @media(max-width: 768px){
+        top: 57%;
+      }
+    }
 </style>

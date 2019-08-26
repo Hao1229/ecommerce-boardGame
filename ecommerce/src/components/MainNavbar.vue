@@ -1,5 +1,12 @@
 <template>
     <div class="fixed-top">
+      <loading :active.sync="isLoading" :is-full-page="true">
+        <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
+        <template slot="default">
+          <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
+        </template>
+        <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
+      </loading>
       <div class="d-flex justify-content-between align-items-center navbarBg">
           <router-link to="/" class="text-primary navbarIcon ml-3 h3 my-2"><i class="fas fa-chess-knight mr-2"></i>桌迷藏</router-link>
           <!-- 漢堡選單icon -->
@@ -34,29 +41,20 @@
               <li class="position-relative" @mouseleave="cartHide">
                   <div class="bg-primary cartTable d-none px-5" @mouseleave="cartHide">
                       <table class="table">
-                        <tbody>
-                            <tr>
+                        <tbody v-if="cartList.length > 0">
+                            <tr v-for="item in cartList" :key="item.id">
                             <td class="position-relative">
                                 <div class="text-white text-nowrap">
-                                    <h5>鍛骰物語</h5>
-                                    <span>1套 x </span><span>NT$1,280</span>
+                                    <h5>{{item.product.title}}</h5>
+                                    <span>{{item.qty}}{{item.product.unit}} x </span><span>NT{{item.product.price | currency}}</span>
                                 </div>
-                                <i class="fas fa-times-circle cancel text-white"></i>
+                                <i class="fas fa-times-circle cancel text-white" @click="removeCart(item.id)"></i>
                             </td>
                             </tr>
                             <tr>
                             <td class="position-relative">
                                 <div class="text-white text-nowrap">
-                                    <h5>村莊</h5>
-                                    <span>1套 x </span><span>NT$2,000</span>
-                                </div>
-                                <i class="fas fa-times-circle cancel text-white ml-2"></i>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td class="position-relative">
-                                <div class="text-white text-nowrap">
-                                   <span class="text-white">小計：</span><span class="font-weight-bold text-white">NT$3,280</span>
+                                   <span class="text-white">小計：</span><span class="font-weight-bold text-white">NT{{cartTotal | currency}}</span>
                                 </div>
                             </td>
                             </tr>
@@ -66,11 +64,13 @@
                                   <button class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</button>
                                 </td>
                             </tr>
-                            <!-- <tr>
+                        </tbody>
+                        <tbody  v-if="cartList.length === 0">
+                             <tr>
                                 <td>
-                                    <span class="text-white">購物車無任何物品</span>
+                                    <span class="text-white text-nowrap">購物車無任何物品</span>
                                 </td>
-                            </tr> -->
+                            </tr>
                         </tbody>
                       </table>
                   </div>
@@ -96,13 +96,51 @@
           </ul>
       </div>
       <!-- pad以下解析度並點擊漢堡icon才會出現的 offcanvas -->
-      <aside class="side min-vh-100 min-vw-100">
-           <i class="fas fa-times-circle cancel text-primary fa-2x" @click="closeOffcanvas"></i>
+      <aside class="side min-vw-100 min-vh-100">
            <ul class="liststyleNone p-0 m-0 px-2 offcanvas">
+             <i class="fas fa-times-circle cancel text-primary fa-2x" @click="closeOffcanvas"></i>
               <li class="mt-5 d-flex justify-content-center p-0 m-0">
                   <router-link to="/login" class="mainNavbarBtn pt-2 h3"><i class="fas fa-user mr-2"></i>後台登入</router-link>
               </li>
-               <li class="mt-5 p-0 m-0">
+              <li class="mt-5 p-0 m-0">
+                  <a href="#" class="mainNavbarBtn pt-2 h3 d-block text-center" @click="RWDcartshow"><i class="fas fa-shopping-cart mr-2"></i>購物車<i class="fas fa-angle-down ml-2" :class="{'fa-angle-up': cartExpand}"></i></a>
+                   <div class="bg-primary RWDcart">
+                      <table class="table">
+                        <tbody v-if="cartList.length > 0">
+                            <tr v-for="item in cartList" :key="item.id">
+                            <td class="position-relative">
+                                <div class="text-white text-nowrap">
+                                    <h5>{{item.product.title}}</h5>
+                                    <span>{{item.qty}}{{item.product.unit}} x </span><span>NT{{item.product.price | currency}}</span>
+                                </div>
+                                <i class="fas fa-times-circle cancel text-white" @click="removeCart(item.id)"></i>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td class="position-relative">
+                                <div class="text-white text-nowrap">
+                                   <span class="text-white">小計：</span><span class="font-weight-bold text-white">NT{{cartTotal | currency}}</span>
+                                </div>
+                            </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                  <button class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</button>
+                                  <button class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody  v-if="cartList.length === 0">
+                             <tr>
+                                <td class="text-center">
+                                    <span class="text-white text-nowrap">購物車無任何物品</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                      </table>
+                  </div>
+              </li>
+                   <li class="mt-5 p-0 m-0">
                   <a href="#" class="mainNavbarBtn pt-2 h3 d-block text-center" @click="RWDcouponsShow"><i class="fas fa-ticket-alt mr-2"></i>優惠卷<i class="fas fa-angle-down ml-2"  :class="{'fa-angle-up': couponExpand}"></i></a>
                   <div class="bg-primary RWDcoupons" :class="{'text-center':tempCoupons.length === 0}">
                       <span class="h5 text-white text-nowrap" v-if="tempCoupons.length === 0">您尚未有任何優惠卷</span>
@@ -120,51 +158,6 @@
                             <td class="text-center">{{item.code}}</td>
                             <td class="pointer" @click="removeCoupon(i)"><i class="fas fa-trash"></i></td>
                             </tr>
-                        </tbody>
-                      </table>
-                  </div>
-              </li>
-              <li class="mt-5 p-0 m-0">
-                  <a href="#" class="mainNavbarBtn pt-2 h3 d-block text-center" @click="RWDcartshow"><i class="fas fa-shopping-cart mr-2"></i>購物車<i class="fas fa-angle-down ml-2" :class="{'fa-angle-up': cartExpand}"></i></a>
-                   <div class="bg-primary RWDcart">
-                      <table class="table">
-                        <tbody>
-                            <tr>
-                            <td class="position-relative">
-                                <div class="text-white text-nowrap">
-                                    <h5>鍛骰物語</h5>
-                                    <span>1套 x </span><span>NT$1,280</span>
-                                </div>
-                                <i class="fas fa-times-circle cancel text-white"></i>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td class="position-relative">
-                                <div class="text-white text-nowrap">
-                                    <h5>村莊</h5>
-                                    <span>1套 x </span><span>NT$2,000</span>
-                                </div>
-                                <i class="fas fa-times-circle cancel text-white ml-2"></i>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td class="position-relative">
-                                <div class="text-white text-nowrap">
-                                   <span class="text-white">小計：</span><span class="font-weight-bold text-white">NT$3,280</span>
-                                </div>
-                            </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                  <button class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</button>
-                                  <button class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</button>
-                                </td>
-                            </tr>
-                            <!-- <tr>
-                                <td>
-                                    <span class="text-white">購物車無任何物品</span>
-                                </td>
-                            </tr> -->
                         </tbody>
                       </table>
                   </div>
@@ -212,7 +205,10 @@ export default {
       ],
       couponExpand: false,
       cartExpand: false,
-      productsExpand: false
+      productsExpand: false,
+      isLoading: false,
+      cartList: [],
+      cartTotal: null
     }
   },
   methods: {
@@ -258,7 +254,31 @@ export default {
     removeCoupon (i) {
       const vm = this
       vm.tempCoupons.splice(i, 1)
+    },
+    getCarts () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const vm = this
+      vm.isLoading = true
+      this.$http.get(api).then((response) => {
+        vm.cartList = response.data.data.carts
+        vm.cartTotal = response.data.data.final_total
+        vm.isLoading = false
+      })
+    },
+    removeCart (id) {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
+      const vm = this
+      this.$http.delete(api).then((response) => {
+        vm.getCarts()
+      })
     }
+  },
+  created () {
+    this.getCarts()
+    const vm = this
+    vm.$bus.$on('update:cart', () => {
+      vm.getCarts()
+    })
   }
 }
 </script>
@@ -285,7 +305,24 @@ export default {
                 display: none
             }
         }
-        &:hover{
+        @media(min-width: 768px){
+            &:hover{
+            color: rgba($color: #ae0000, $alpha: 1.0);
+            &::before{
+            position: absolute;
+            content: '';
+            top: 0;
+            left: 50%;
+            height: 3px;
+            background: #ae0000;
+            width: 100%;
+            transform: translateX(-50%);
+            transition: all .3s
+          }
+            text-decoration: none;
+          }
+        }
+        &:active{
             color: rgba($color: #ae0000, $alpha: 1.0);
             &::before{
             position: absolute;
@@ -314,6 +351,7 @@ export default {
         right: 0;
         bottom: 0;
         background-color: rgba($color: #DCDCDC, $alpha: 0.8);
+        overflow: auto
     }
     .side{
         position: absolute;
@@ -326,6 +364,7 @@ export default {
     }
     .offcanvasShow{
         transform: translateX(0);
+        overflow: auto
     }
     .cancel{
         position: absolute;
