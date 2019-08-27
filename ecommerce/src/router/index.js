@@ -8,6 +8,8 @@ import Home from '@/components/pages/AdminHome'
 import Product from '@/components/pages/Products'
 import Coupon from '@/components/pages/Coupon'
 import Orders from '@/components/pages/Orders'
+import Maincontent from '@/components/MainContent'
+import MainAllProducts from '@/components/MainAllProducts'
 Vue.use(Router)
 
 export default new Router({
@@ -23,8 +25,19 @@ export default new Router({
     },
     {
       path: '/main',
-      name: 'main',
-      component: Main
+      component: Main,
+      children: [
+        {
+          path: '',
+          name: 'maincontent',
+          component: Maincontent
+        },
+        {
+          path: 'allproducts',
+          name: 'mainallproducts',
+          component: MainAllProducts
+        }
+      ]
     },
     {
       path: '/login',

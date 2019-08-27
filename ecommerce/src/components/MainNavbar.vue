@@ -81,6 +81,9 @@
                       <table class="table table-borderless">
                         <tbody>
                             <tr>
+                              <td><router-link :to="{name:'mainallproducts'}" class="btn btn-light text-nowrap">全部遊戲</router-link></td>
+                            </tr>
+                            <tr>
                             <td><a href="#" class="btn btn-light text-nowrap">派對遊戲</a></td>
                             <td><a href="#" class="btn btn-light text-nowrap">策略遊戲</a></td>
                             </tr>
@@ -167,6 +170,9 @@
                     <div class="bg-primary RWDproducts">
                       <table class="table table-borderless">
                         <tbody>
+                            <tr>
+                              <td><router-link :to="{name:'mainallproducts'}" class="btn btn-light text-nowrap">全部遊戲</router-link></td>
+                            </tr>
                             <tr>
                             <td><a href="#" class="btn btn-light text-nowrap">派對遊戲</a></td>
                             <td><a href="#" class="btn btn-light text-nowrap">策略遊戲</a></td>
