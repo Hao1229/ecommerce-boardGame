@@ -12,18 +12,18 @@
             <div class="text-center mb-3 mb-md-0" style="position:sticky;top:80px;">
               <span class="h4 d-none d-md-inline">遊戲分類</span>
               <ul class="list-group list-group-flush mt-3 d-none d-md-block">
-                <li class="list-group-item list-group-item-action pointer active">全部遊戲</li>
+                <li class="list-group-item list-group-item-action pointer"><router-link :to="{name:'mainallproducts'}">全部遊戲</router-link></li>
                 <li class="list-group-item list-group-item-action pointer"><router-link :to="{name:'partyproducts'}">派對遊戲</router-link></li>
-                <li class="list-group-item list-group-item-action pointer"><router-link :to="{name:'strategyproducts'}">策略遊戲</router-link></li>
+                <li class="list-group-item list-group-item-action pointer active">策略遊戲</li>
                 <li class="list-group-item list-group-item-action pointer"><router-link :to="{name:'familygyproducts'}">家庭遊戲</router-link></li>
                 <li class="list-group-item list-group-item-action pointer"><router-link :to="{name:'themeproducts'}">主題遊戲</router-link></li>
               </ul>
-              <span class="h4 d-inline d-md-none text-primary">全部遊戲</span>
+              <span class="h4 d-inline d-md-none text-primary">策略遊戲</span>
             </div>
           </div>
-          <div class="col-md-9">
+          <div class="col-md-9 min-vh-100">
             <div class="row">
-              <div class="col-md-4 col-6 mb-3" v-for="item in allProducts" :key="item.id">
+              <div class="col-md-4 col-6 mb-3" v-for="item in partyProducts" :key="item.id">
                 <div class="card border-primary">
                   <img class="card-img-top" :src="item.imageUrl">
                   <div class="card-body">
@@ -48,7 +48,7 @@
 export default {
   data () {
     return {
-      allProducts: [],
+      partyProducts: [],
       isLoading: false,
       status: {
         loadingItem: ''
@@ -61,8 +61,9 @@ export default {
       const vm = this
       vm.isLoading = true
       this.$http.get(api).then((response) => {
-        vm.allProducts = response.data.products
-        // console.log(response.data, vm.allProducts)
+        vm.partyProducts = response.data.products.filter((item) => {
+          return item.category === '策略遊戲'
+        })
         vm.isLoading = false
       })
     },

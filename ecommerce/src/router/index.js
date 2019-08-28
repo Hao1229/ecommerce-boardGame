@@ -10,6 +10,11 @@ import Coupon from '@/components/pages/Coupon'
 import Orders from '@/components/pages/Orders'
 import Maincontent from '@/components/MainContent'
 import MainAllProducts from '@/components/MainAllProducts'
+import MainPartyProducts from '@/components/MainParty'
+import MainStrategyProducts from '@/components/MainStrategy'
+import MainFamilyProducts from '@/components/MainFamily'
+import MainThemeProducts from '@/components/MainTheme'
+import ProductsDetail from '@/components/ProductsDetail'
 Vue.use(Router)
 
 export default new Router({
@@ -36,6 +41,31 @@ export default new Router({
           path: 'allproducts',
           name: 'mainallproducts',
           component: MainAllProducts
+        },
+        {
+          path: 'partyproducts',
+          name: 'partyproducts',
+          component: MainPartyProducts
+        },
+        {
+          path: 'strategyproducts',
+          name: 'strategyproducts',
+          component: MainStrategyProducts
+        },
+        {
+          path: 'familygyproducts',
+          name: 'familygyproducts',
+          component: MainFamilyProducts
+        },
+        {
+          path: 'themeproducts',
+          name: 'themeproducts',
+          component: MainThemeProducts
+        },
+        {
+          path: 'products/:Id',
+          name: 'productsDetail',
+          component: ProductsDetail
         }
       ]
     },

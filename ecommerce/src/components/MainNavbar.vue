@@ -40,39 +40,29 @@
               </li>
               <li class="position-relative" @mouseleave="cartHide">
                   <div class="bg-primary cartTable d-none px-5" @mouseleave="cartHide">
-                      <table class="table">
-                        <tbody v-if="cartList.length > 0">
-                            <tr v-for="item in cartList" :key="item.id">
-                            <td class="position-relative">
-                                <div class="text-white text-nowrap">
-                                    <h5>{{item.product.title}}</h5>
-                                    <span>{{item.qty}}{{item.product.unit}} x </span><span>NT{{item.product.price | currency}}</span>
-                                </div>
-                                <i class="fas fa-times-circle cancel text-white" @click="removeCart(item.id)"></i>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td class="position-relative">
-                                <div class="text-white text-nowrap">
-                                   <span class="text-white">小計：</span><span class="font-weight-bold text-white">NT{{cartTotal | currency}}</span>
-                                </div>
-                            </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                  <button class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</button>
-                                  <button class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody  v-if="cartList.length === 0">
-                             <tr>
-                                <td>
-                                    <span class="text-white text-nowrap">購物車無任何物品</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                      </table>
+                    <ul v-if="cartList.length > 0" class="liststyleNone px-0 mx-0 pr-5" style="overflow-y:auto;max-height:50vh">
+                      <li v-for="item in cartList" :key="item.id" class="border-bottom border-light position-relative mt-2 pb-2">
+                        <div class="text-white text-nowrap">
+                            <h5>{{item.product.title}}</h5>
+                            <span>{{item.qty}}{{item.product.unit}} x </span><span>NT{{item.product.price | currency}}</span>
+                        </div>
+                         <i class="fas fa-times-circle cancel text-white" @click="removeCart(item.id)"></i>
+                      </li>
+                      <li class="border-bottom border-light position-relative mt-2 pb-2">
+                         <div class="text-white text-nowrap">
+                            <span class="text-white">小計：</span><span class="font-weight-bold text-white">NT{{cartTotal | currency}}</span>
+                         </div>
+                      </li>
+                      <li class="my-2">
+                        <button class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</button>
+                        <button class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</button>
+                      </li>
+                    </ul>
+                    <ul v-if="cartList.length === 0" class="liststyleNone px-0 mx-0">
+                      <li class="p-3">
+                        <span class="text-white text-nowrap">購物車無任何物品</span>
+                      </li>
+                    </ul>
                   </div>
                   <a href="#" class="mainNavbarBtn mr-4 pt-2 h5" @mouseenter="cartShow"><i class="fas fa-shopping-cart mr-2"></i>購物車<i class="fas fa-angle-down ml-2"></i></a>
               </li>
@@ -84,12 +74,12 @@
                               <td><router-link :to="{name:'mainallproducts'}" class="btn btn-light text-nowrap">全部遊戲</router-link></td>
                             </tr>
                             <tr>
-                            <td><a href="#" class="btn btn-light text-nowrap">派對遊戲</a></td>
-                            <td><a href="#" class="btn btn-light text-nowrap">策略遊戲</a></td>
+                            <td><router-link :to="{name:'partyproducts'}" class="btn btn-light text-nowrap">派對遊戲</router-link></td>
+                            <td><router-link :to="{name:'strategyproducts'}" class="btn btn-light text-nowrap">策略遊戲</router-link></td>
                             </tr>
                             <tr>
-                            <td><a href="#" class="btn btn-light text-nowrap">家庭遊戲</a></td>
-                            <td><a href="#" class="btn btn-light text-nowrap">主題遊戲</a></td>
+                            <td><router-link :to="{name:'familygyproducts'}" class="btn btn-light text-nowrap">家庭遊戲</router-link></td>
+                            <td><router-link :to="{name:'themeproducts'}" class="btn btn-light text-nowrap">主題遊戲</router-link></td>
                             </tr>
                         </tbody>
                       </table>
@@ -174,12 +164,12 @@
                               <td><router-link :to="{name:'mainallproducts'}" class="btn btn-light text-nowrap">全部遊戲</router-link></td>
                             </tr>
                             <tr>
-                            <td><a href="#" class="btn btn-light text-nowrap">派對遊戲</a></td>
-                            <td><a href="#" class="btn btn-light text-nowrap">策略遊戲</a></td>
+                            <td><router-link :to="{name:'partyproducts'}" class="btn btn-light text-nowrap">派對遊戲</router-link></td>
+                            <td><router-link :to="{name:'strategyproducts'}" class="btn btn-light text-nowrap">策略遊戲</router-link></td>
                             </tr>
                             <tr>
-                            <td><a href="#" class="btn btn-light text-nowrap">家庭遊戲</a></td>
-                            <td><a href="#" class="btn btn-light text-nowrap">主題遊戲</a></td>
+                            <td><router-link :to="{name:'familygyproducts'}" class="btn btn-light text-nowrap">家庭遊戲</router-link></td>
+                            <td><router-link :to="{name:'themeproducts'}" class="btn btn-light text-nowrap">主題遊戲</router-link></td>
                             </tr>
                         </tbody>
                       </table>
