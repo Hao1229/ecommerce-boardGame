@@ -27,7 +27,7 @@
             </div>
             <div class="col-md-6">
                 <div class="couponBg mt-3 p-4 h-100 animated">
-                    <router-link to="/" class="textNodecoration">
+                    <router-link to="main/getcoupon" class="textNodecoration">
                       <div class="text-center d-flex flex-column couponAnimation">
                         <i class="fas fa-ticket-alt fa-3x text-success"></i>
                         <span class="display-3 mb-3 text-success"> 優惠卷加碼送 </span>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container mb-4">
         <loading :active.sync="isLoading" :is-full-page="true">
         <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
         <template slot="default">
@@ -7,14 +7,32 @@
         </template>
         <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
        </loading>
-        <div class="card" style="width: 18rem;">
-            <img src="" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
+       <div class="row min-vh-100">
+         <div class="col-lg-5">
+           <img :src="productDetail.imageUrl" class="w-100 h-100 heightRwd">
+         </div>
+         <div class="col-lg-7 mt-3 mt-lg-0">
+           <h3 class="text-secondary font-weight-bold">{{productDetail.title}}</h3>
+           <p class="border-bottom border-secondary pb-3">{{productDetail.description}}</p>
+           <p class="border-bottom border-secondary pb-3">{{productDetail.content}}</p>
+           <div class="d-md-flex mt-5">
+             <div class="btn-group mr-auto" role="group">
+               <button type="button" class="btn btn-outline-secondary"  @click="reduceQty" :disabled="productQty == 1">-</button>
+               <input type="number" class="w-50 text-center" min="1" max="10" v-model="productQty">
+               <button type="button" class="btn btn-outline-secondary" @click="addQty" :disabled="productQty == 10">+</button>
+               <i class="fas fa-cart-plus fa-2x ml-4 border rounded-circle border-secondary p-2" @click="addtoCart" v-if="!isAdding"></i>
+               <i class="fas fa-cog fa-spin fa-2x ml-4 border rounded-circle border-secondary p-2" v-if="isAdding"></i>
+             </div>
+             <div class="mt-4 mt-md-0">
+               <span class="h4 text-muted"><s>NT{{productDetail.origin_price | currency}}</s></span>
+               <span class="h1 text-secondary ml-3">NT{{productDetail.price | currency}}</span>
+             </div>
+           </div>
+            <div class="mt-5">
+             <span class="h3 backstep" @click="backStep"><i class="fas fa-hand-point-left mr-2"></i>繼續選購</span>
+           </div>
+         </div>
+       </div>
     </div>
 </template>
 
@@ -24,7 +42,9 @@ export default {
     return {
       productId: '',
       productDetail: [],
-      isLoading: false
+      isLoading: false,
+      productQty: '1',
+      isAdding: false
     }
   },
   methods: {
@@ -33,9 +53,33 @@ export default {
       vm.isLoading = true
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/product/${vm.productId}`
       this.$http.get(api).then((response) => {
-        console.log(response.data)
+        vm.productDetail = response.data.product
         vm.isLoading = false
       })
+    },
+    addQty () {
+      const vm = this
+      vm.productQty = parseInt(vm.productQty) + 1
+    },
+    reduceQty () {
+      const vm = this
+      vm.productQty = parseInt(vm.productQty) - 1
+    },
+    addtoCart () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const vm = this
+      const product = {
+        'product_id': vm.productId,
+        'qty': vm.productQty
+      }
+      vm.isAdding = true
+      this.$http.post(api, {data: product}).then((response) => {
+        vm.$bus.$emit('update:cart')
+        vm.isAdding = false
+      })
+    },
+    backStep () {
+      this.$router.go(-1)
     }
   },
   created () {
@@ -47,4 +91,31 @@ export default {
 
 <style lang="scss" scoped>
     @import url("@fortawesome/fontawesome-free/css/all.css");
+    .container{
+         margin-top: 80px;
+     }
+     .heightRwd{
+       @media(min-width: 769px){
+         height: 75% !important;
+       }
+     }
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+    .fa-cart-plus{
+      &:hover{
+        background-color: rgba($color: brown, $alpha: 0.7);
+        color:white;
+        cursor: pointer;
+      }
+    }
+    .backstep{
+      color: rgba($color: brown, $alpha: 0.8);
+      &:hover{
+        cursor: pointer;
+        color: brown
+      }
+    }
 </style>

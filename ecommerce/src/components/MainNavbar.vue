@@ -19,6 +19,7 @@
                <li class="position-relative" @mouseleave="couponHide">
                     <div class="couponTable d-none bg-primary" :class="{'p-4':tempCoupons.length === 0}" @mouseleave="couponHide">
                       <span class="h5 text-white text-nowrap" v-if="tempCoupons.length === 0">您尚未有任何優惠卷</span>
+                      <router-link :to="{name:'getcoupon'}" v-if="tempCoupons.length === 0" class="h5 btn btn-outline-light mt-3">拿取優惠卷</router-link>
                       <table class="table" v-if="tempCoupons.length > 0">
                         <thead>
                             <tr class="text-nowrap text-white">
@@ -136,7 +137,8 @@
                    <li class="mt-5 p-0 m-0">
                   <a href="#" class="mainNavbarBtn pt-2 h3 d-block text-center" @click="RWDcouponsShow"><i class="fas fa-ticket-alt mr-2"></i>優惠卷<i class="fas fa-angle-down ml-2"  :class="{'fa-angle-up': couponExpand}"></i></a>
                   <div class="bg-primary RWDcoupons" :class="{'text-center':tempCoupons.length === 0}">
-                      <span class="h5 text-white text-nowrap" v-if="tempCoupons.length === 0">您尚未有任何優惠卷</span>
+                      <span class="h5 text-white text-nowrap" v-if="tempCoupons.length === 0">您尚未有任何優惠卷</span><br>
+                      <router-link :to="{name:'getcoupon'}" v-if="tempCoupons.length === 0" class="h5 btn btn-outline-light mt-3">拿取優惠卷</router-link>
                       <table class="table" v-if="tempCoupons.length > 0">
                         <thead>
                             <tr class="text-nowrap text-white">
@@ -185,20 +187,7 @@ import $ from 'jquery'
 export default {
   data () {
     return {
-      tempCoupons: [
-        {
-          title: '中秋節優惠',
-          code: '1234'
-        },
-        {
-          title: '中秋節優惠2',
-          code: 'abcd'
-        },
-        {
-          title: '中秋節優惠3',
-          code: '5678'
-        }
-      ],
+      tempCoupons: JSON.parse(localStorage.getItem('coupon')) || [],
       couponExpand: false,
       cartExpand: false,
       productsExpand: false,
@@ -213,6 +202,13 @@ export default {
     },
     closeOffcanvas () {
       $('.side').removeClass('offcanvasShow')
+      $('.RWDcoupons').removeClass('RWDcoupons-active')
+      $('.RWDcart').removeClass('RWDcart-active')
+      $('.RWDproducts').removeClass('RWDproducts-active')
+      const vm = this
+      vm.couponExpand = false
+      vm.cartExpand = false
+      vm.productsExpand = false
     },
     producttableShow () {
       $('.productTable').addClass('d-block')
@@ -250,6 +246,9 @@ export default {
     removeCoupon (i) {
       const vm = this
       vm.tempCoupons.splice(i, 1)
+      if (vm.tempCoupons.length === 0) {
+        vm.couponExpand = false
+      }
     },
     getCarts () {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
@@ -266,6 +265,16 @@ export default {
       const vm = this
       this.$http.delete(api).then((response) => {
         vm.getCarts()
+        if (vm.cartList.length === 0) {
+          vm.cartExpand = false
+        }
+      })
+    },
+    updateCoupons (title, code) {
+      const vm = this
+      vm.tempCoupons.push({
+        title,
+        code
       })
     }
   },
@@ -275,6 +284,18 @@ export default {
     vm.$bus.$on('update:cart', () => {
       vm.getCarts()
     })
+    vm.$bus.$on('coupon:get', (title, code) => {
+      vm.updateCoupons(title, code)
+    })
+  },
+  watch: {
+    tempCoupons: {
+      handler () {
+        let storageName = 'coupon'
+        localStorage.setItem(storageName, JSON.stringify(this.tempCoupons))
+      },
+      deep: true
+    }
   }
 }
 </script>

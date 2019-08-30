@@ -15,6 +15,7 @@ import MainStrategyProducts from '@/components/MainStrategy'
 import MainFamilyProducts from '@/components/MainFamily'
 import MainThemeProducts from '@/components/MainTheme'
 import ProductsDetail from '@/components/ProductsDetail'
+import GetCoupon from '@/components/GetCoupon'
 Vue.use(Router)
 
 export default new Router({
@@ -66,6 +67,11 @@ export default new Router({
           path: 'products/:Id',
           name: 'productsDetail',
           component: ProductsDetail
+        },
+        {
+          path: 'getcoupon',
+          name: 'getcoupon',
+          component: GetCoupon
         }
       ]
     },
