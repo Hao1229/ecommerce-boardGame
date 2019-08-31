@@ -31,9 +31,11 @@
                     <p class="card-text text-truncate">{{item.description}}</p>
                     <p class="d-lg-flex justify-content-between"><s><span class="text-muted mr-2">NT{{item.origin_price | currency}}</span></s><br><span class="h4 text-primary">NT{{item.price | currency}}</span></p>
                     <div class="d-lg-flex justify-content-between">
-                      <i class="fas fa-cart-plus pointer border border-primary rounded-circle p-2" @click="addtoCart(item.id)"></i>
-                      <i class="fas fa-cog fa-spin ml-2" v-if="status.loadingItem === item.id"></i>
-                      <a href="#" class="ml-3 ml-lg-0" @click.prevent="productDetail(item.id)">more..</a>
+                      <div>
+                        <i class="fas fa-cart-plus pointer border border-primary rounded-circle p-2" @click="addtoCart(item.id)"></i>
+                        <i class="fas fa-cog fa-spin ml-2" v-if="status.loadingItem === item.id"></i>
+                      </div>
+                      <a href="#" @click.prevent="productDetail(item.id)">more..</a>
                     </div>
                   </div>
                 </div>

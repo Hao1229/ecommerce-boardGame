@@ -88,18 +88,24 @@ export default {
       Q2: '',
       Q3: '',
       Q4: '',
-      coupons: [],
+      coupons: [
+        {
+          title: '早鳥優惠',
+          code: '1234',
+          due_date: '2019-10-31',
+          percent: '80'
+        },
+        {
+          title: '中秋優惠',
+          code: 'abcd',
+          due_date: '2019-09-15',
+          percent: '75'
+        }
+      ],
       tempCoupon: []
     }
   },
   methods: {
-    getCoupons (page = 1) {
-      const vm = this
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupons?page=${page}`
-      this.$http.get(api).then((response) => {
-        vm.coupons = response.data.coupons
-      })
-    },
     customizedCoupon () {
       const vm = this
       if (parseInt(vm.Q1) + parseInt(vm.Q2) + parseInt(vm.Q3) + parseInt(vm.Q4) < 3) {
@@ -120,9 +126,6 @@ export default {
         alert('請填寫完整喔~')
       }
     }
-  },
-  created () {
-    this.getCoupons()
   }
 }
 </script>

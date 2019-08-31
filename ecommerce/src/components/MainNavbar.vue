@@ -272,10 +272,17 @@ export default {
     },
     updateCoupons (title, code) {
       const vm = this
-      vm.tempCoupons.push({
-        title,
-        code
+      const judgeCoupon = vm.tempCoupons.some((item) => {
+        return item.title === title
       })
+      if (!judgeCoupon) {
+        vm.tempCoupons.push({
+          title,
+          code
+        })
+      } else {
+        alert('已有此優惠卷')
+      }
     }
   },
   created () {
