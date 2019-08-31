@@ -29,7 +29,7 @@
                   <div class="card-body">
                     <h5 class="card-title">{{item.title}}</h5>
                     <p class="card-text text-truncate">{{item.description}}</p>
-                    <p class="d-lg-flex justify-content-between"><s><span class="text-muted mr-2">NT{{item.origin_price | currency}}</span></s><br><span class="h4 text-primary">NT{{item.price | currency}}</span></p>
+                    <p class="d-lg-flex justify-content-between"><s><span class="text-muted mr-2">NT{{item.origin_price | currency}}</span></s><br><span class="h5 text-primary">NT{{item.price | currency}}</span></p>
                     <div class="d-lg-flex justify-content-between">
                       <div>
                         <i class="fas fa-cart-plus pointer border border-primary rounded-circle p-2" @click="addtoCart(item.id)"></i>

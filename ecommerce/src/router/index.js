@@ -16,6 +16,8 @@ import MainFamilyProducts from '@/components/MainFamily'
 import MainThemeProducts from '@/components/MainTheme'
 import ProductsDetail from '@/components/ProductsDetail'
 import GetCoupon from '@/components/GetCoupon'
+import Cart from '@/components/ShoppingCart'
+
 Vue.use(Router)
 
 export default new Router({
@@ -72,6 +74,11 @@ export default new Router({
           path: 'getcoupon',
           name: 'getcoupon',
           component: GetCoupon
+        },
+        {
+          path: 'cart',
+          name: 'cart',
+          component: Cart
         }
       ]
     },

@@ -55,7 +55,7 @@
                          </div>
                       </li>
                       <li class="my-2">
-                        <button class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</button>
+                        <router-link :to="{name:'cart'}" class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</router-link>
                         <button class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</button>
                       </li>
                     </ul>
@@ -119,7 +119,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                  <button class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</button>
+                                  <router-link :to="{name:'cart'}" class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</router-link>
                                   <button class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</button>
                                 </td>
                             </tr>
