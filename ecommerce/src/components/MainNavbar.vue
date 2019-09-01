@@ -56,7 +56,7 @@
                       </li>
                       <li class="my-2">
                         <router-link :to="{name:'cart'}" class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</router-link>
-                        <button class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</button>
+                        <router-link :to="{name:'checkout'}" class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</router-link>
                       </li>
                     </ul>
                     <ul v-if="cartList.length === 0" class="liststyleNone px-0 mx-0">
@@ -120,7 +120,7 @@
                             <tr>
                                 <td>
                                   <router-link :to="{name:'cart'}" class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</router-link>
-                                  <button class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</button>
+                                  <router-link :to="{name:'checkout'}" class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</router-link>
                                 </td>
                             </tr>
                         </tbody>
@@ -280,7 +280,7 @@ export default {
           title,
           code
         })
-      } else {
+      } else if (judgeCoupon) {
         alert('已有此優惠卷')
       }
     }

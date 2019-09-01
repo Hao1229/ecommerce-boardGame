@@ -50,10 +50,11 @@
                     <tr v-for="item in selectOrders" :key="item.id">
                     <td>{{item.user.name}}</td>
                     <td v-for="(product, i) in item.products" :key="i" class="d-flex flex-column">
-                        {{product.product.title}} 數量：{{product.product.num}} {{product.product.unit}}
+                        {{product.product.title}} 數量：{{product.qty}} {{product.product.unit}}
                     </td>
                     <td class="text-right">{{item.total | currency}}</td>
-                    <td>{{item.paid_date | date}}</td>
+                    <td v-if="item.is_paid">{{item.paid_date | date}}</td>
+                    <td class="text-muted" v-if="!item.is_paid">未付款</td>
                     <td class="text-muted" v-if="!item.is_paid">未付款</td>
                     <td class="text-success" v-if="item.is_paid">已付款</td>
                     <td><button class="btn btn-dark btn-sm" @click="openModel(item)">資料確認</button></td>
@@ -88,6 +89,10 @@
                         <label for="mail">電子信箱</label>
                         <input type="email" class="form-control" id="mail" readonly v-model="tempUser.email">
                     </div>
+                    <div class="form-group">
+                      <label for="message">顧客備註</label>
+                      <textarea class="form-control" id="message" rows="3" readonly v-model="tempMessage"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-dark" data-dismiss="modal">確認</button>
@@ -111,6 +116,7 @@ export default {
     return {
       orders: [],
       tempUser: {},
+      tempMessage: '',
       isLoading: false,
       pagination: {},
       selectOption: 'all'
@@ -125,13 +131,13 @@ export default {
         vm.orders = response.data.orders
         vm.pagination = response.data.pagination
         vm.isLoading = false
-        console.log(vm.pagination)
       })
     },
     openModel (item) {
       $('#orderModal').modal('show')
       const vm = this
       vm.tempUser = Object.assign({}, item.user)
+      vm.tempMessage = item.message
     }
   },
   created () {

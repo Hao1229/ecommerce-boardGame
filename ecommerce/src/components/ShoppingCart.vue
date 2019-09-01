@@ -11,7 +11,7 @@
             <div class="text-center pt-5 d-none d-md-block">
                 <span class="h2 text-secondary">購物車列表</span>
                 <span class="h4 mx-3 text-muted"><i class="fas fa-chevron-right"></i></span>
-                <span class="h2 text-muted dataEffect">結帳資料</span>
+                <router-link :to="{name:'checkout'}" class="h2 text-muted dataEffect">結帳資料</router-link>
                 <span class="h4 mx-3 text-muted"><i class="fas fa-chevron-right"></i></span>
                 <span class="h2 text-muted">結帳確認</span>
             </div>
@@ -28,7 +28,7 @@
                                 <th width='130'>價格</th>
                                 <th width='180'>數量</th>
                                 <th width='100'>總計</th>
-                                <th width='80'>刪除</th>
+                                <th width='90'>刪除</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,14 +64,14 @@
                                         <label class="form-check-label" for="homeDelivery">
                                             宅配
                                         </label>
-                                        </div>
-                                        <div class="form-check">
+                                    </div>
+                                    <div class="form-check">
                                         <input class="form-check-input" type="radio" name="delivery" id="convenience">
                                         <label class="form-check-label" for="convenience">
                                             超商取貨
                                         </label>
-                                        </div>
-                                        <div class="form-check">
+                                    </div>
+                                    <div class="form-check">
                                         <input class="form-check-input" type="radio" name="delivery" id="store">
                                         <label class="form-check-label" for="store">
                                             到店自取
@@ -90,7 +90,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <button class="btn btn-block btn-secondary">前 往 結 帳</button>
+                    <router-link :to="{name:'checkout'}" class="btn btn-block btn-secondary">前 往 結 帳</router-link>
                     <div class="mt-3 borderCustomized pb-2">
                         <div class="form-group">
                             <label for="coupon"><i class="fas fa-ticket-alt text-secondary mr-2"></i>優惠卷</label>
@@ -170,6 +170,7 @@ export default {
       &:hover{
           color: #D2691E !important;
           cursor: pointer;
+          text-decoration: none
       }
   }
   .imgSize{

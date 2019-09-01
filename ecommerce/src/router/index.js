@@ -17,6 +17,8 @@ import MainThemeProducts from '@/components/MainTheme'
 import ProductsDetail from '@/components/ProductsDetail'
 import GetCoupon from '@/components/GetCoupon'
 import Cart from '@/components/ShoppingCart'
+import Checkout from '@/components/Checkout'
+import CheckoutOrder from '@/components/CheckoutOrder'
 
 Vue.use(Router)
 
@@ -79,6 +81,16 @@ export default new Router({
           path: 'cart',
           name: 'cart',
           component: Cart
+        },
+        {
+          path: 'checkout',
+          name: 'checkout',
+          component: Checkout
+        },
+        {
+          path: 'checkoutorder/:orderId',
+          name: 'checkoutorder',
+          component: CheckoutOrder
         }
       ]
     },
