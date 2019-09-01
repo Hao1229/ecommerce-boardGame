@@ -34,9 +34,10 @@
                             <tbody>
                                 <tr v-for="item in cartList" :key="item.id">
                                 <td class="align-middle"><img :src="item.product.imageUrl" class="imgSize mr-3">{{item.product.title}}</td>
-                                <td class="text-right align-middle">NT{{item.product.price | currency}}</td>
+                                <td class="text-right align-middle">NT{{item.product.price | currency}}<br><span class="text-success" v-if="carts.total !== carts.final_total">已套用優惠卷</span></td>
                                 <td class="align-middle">{{item.qty}}/{{item.product.unit}}</td>
-                                <td class="text-right align-middle">NT{{item.final_total | currency}}</td>
+                                <td class="text-right align-middle" v-if="carts.total !== carts.final_total"><s><span class="text-muted">NT{{item.total | currency}}</span></s><br><span class="text-success">NT{{item.final_total | currency}}</span></td>
+                                <td class="text-right align-middle" v-if="carts.total === carts.final_total">NT{{item.total | currency}}</td>
                                 <td class="text-center align-middle"><i class="fas fa-trash-alt pointer" @click="removeCart(item.id)"></i></td>
                                 </tr>
                             </tbody>
@@ -80,15 +81,23 @@
                                 </tr>
                                 <tr class="border-bottom">
                                     <th>總計</th>
-                                    <th class="text-right">NT{{cartTotal | currency}}</th>
+                                    <th class="text-right">NT{{carts.total | currency}}</th>
+                                </tr>
+                                <tr class="border-bottom" v-if="carts.total !== carts.final_total">
+                                    <th>折扣價</th>
+                                    <th class="text-right text-success">NT{{carts.final_total | currency}}</th>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <button class="btn btn-block btn-secondary">前 往 結 帳</button>
                     <div class="mt-3 borderCustomized pb-2">
-                        <span><i class="fas fa-ticket-alt text-secondary mr-2"></i>優惠卷</span>
+                        <div class="form-group">
+                            <label for="coupon"><i class="fas fa-ticket-alt text-secondary mr-2"></i>優惠卷</label>
+                            <input type="text" class="form-control" id="coupon" placeholder="輸入優惠卷代碼" v-model="couponCode">
+                        </div>
                     </div>
+                    <button class="btn btn-block btn-primary mt-3 mb-3 mb-md-0" @click="useCoupon">套 用 優 惠 卷</button>
                 </div>
             </div>
         </section>
@@ -100,8 +109,9 @@ export default {
   data () {
     return {
       cartList: [],
-      cartTotal: '',
-      isLoading: false
+      carts: [],
+      isLoading: false,
+      couponCode: ''
     }
   },
   methods: {
@@ -111,7 +121,8 @@ export default {
       vm.isLoading = true
       this.$http.get(api).then((response) => {
         vm.cartList = response.data.data.carts
-        vm.cartTotal = response.data.data.final_total
+        vm.carts = response.data.data
+        console.log(vm.cartList)
         vm.isLoading = false
       })
     },
@@ -122,6 +133,21 @@ export default {
       this.$http.delete(api).then((response) => {
         vm.getCart()
         this.$bus.$emit('update:cart')
+        vm.isLoading = false
+      })
+    },
+    useCoupon () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/coupon`
+      const vm = this
+      vm.isLoading = true
+      this.$http.post(api, {data: {code: vm.couponCode}}).then((response) => {
+        console.log(response.data)
+        if (response.data.success) {
+          this.$bus.$emit('message:push', response.data.message, 'success')
+        } else {
+          this.$bus.$emit('message:push', response.data.message, 'danger')
+        }
+        vm.getCart()
         vm.isLoading = false
       })
     },

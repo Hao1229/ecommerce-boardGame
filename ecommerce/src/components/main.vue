@@ -1,6 +1,7 @@
 <template>
     <div>
         <Navbar></Navbar>
+        <AlertMessage></AlertMessage>
         <router-view></router-view>
         <i class="far fa-arrow-alt-circle-up fa-3x" @click="gotoTop"></i>
         <Footer></Footer>
@@ -11,6 +12,7 @@
 import $ from 'jquery'
 import Navbar from './MainNavbar'
 import Footer from './MainFooter'
+import AlertMessage from './AlertMessage'
 $(window).scroll(() => {
   let scrollTop = $(window).scrollTop()
   let windowSize = $(window).height()
@@ -23,7 +25,8 @@ $(window).scroll(() => {
 export default {
   components: {
     Navbar,
-    Footer
+    Footer,
+    AlertMessage
   },
   methods: {
     gotoTop () {
