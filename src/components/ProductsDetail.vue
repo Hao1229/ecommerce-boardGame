@@ -92,7 +92,7 @@ export default {
 <style lang="scss" scoped>
     @import url("@fortawesome/fontawesome-free/css/all.css");
     .container{
-         margin-top: 80px;
+         padding-top: 70px;
      }
      .heightRwd{
        @media(min-width: 769px){

@@ -440,7 +440,7 @@ export default {
     }
     .cartCount{
       padding: 2px 5px;
-      background-color: rgba($color: white, $alpha: 0.9);
+      background-color: rgba($color: white, $alpha: 1.0);
       position: absolute;
       top: -4px;
       left: -8px;

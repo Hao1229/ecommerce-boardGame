@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="bg-light">
-    <div class="container pb-5 pb-md-0">
+    <div class="container py-5 pb-md-0">
       <section class="timeline-section pt-5">
         <div class="row animated">
           <div class="mt-3 col-6">
@@ -23,17 +23,17 @@
           </div>
           <div class="col-6">
             <router-link to="/allproducts" class="RWDadTitle">週年慶大促銷</router-link>
-            <p class="h2 mt-5 RWDadTitle">全館商品大特價</p>
-            <p class="h2 mt-5 RWDadTitle">不限金額、數量，全館免運</p>
-            <p class="h2 mt-5 RWDadTitle">7天鑑賞期，不滿意退貨</p>
+            <p class="h2 mt-2 RWDadTitle">全館商品大特價</p>
+            <p class="h2 mt-2 RWDadTitle">不限金額、數量，全館免運</p>
+            <p class="h2 mt-2 RWDadTitle">7天鑑賞期，不滿意退貨</p>
           </div>
         </div>
-        <div class="row animated mt-3">
+        <div class="row animated mt-5">
           <div class="col-6">
             <router-link to="/getcoupon" class="RWDadTitle">優惠卷大放送</router-link>
-            <p class="h2 mt-5 RWDadTitle">回答問卷領取優惠卷</p>
-            <p class="h2 mt-5 RWDadTitle">多種優惠卷、多種折扣</p>
-            <p class="h2 mt-5 RWDadTitle">全館商品皆可使用</p>
+            <p class="h2 mt-2 RWDadTitle">回答問卷領取優惠卷</p>
+            <p class="h2 mt-2 RWDadTitle">多種優惠卷、多種折扣</p>
+            <p class="h2 mt-2 RWDadTitle">全館商品皆可使用</p>
           </div>
           <div class="mt-3 col-6">
             <router-link to="/getcoupon">
