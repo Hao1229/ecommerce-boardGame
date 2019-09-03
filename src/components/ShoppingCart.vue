@@ -1,5 +1,5 @@
 <template>
-    <div class="container min-vh-100">
+    <div class="container min-vh-100 mb-3">
          <loading :active.sync="isLoading" :is-full-page="true">
             <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
             <template slot="default">
@@ -19,7 +19,7 @@
                 <span class="h2 text-secondary">購物車列表</span>
             </div>
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-8 mb-4">
                     <div class="table-responsive">
                         <table class="table mt-5">
                             <thead class="thead-light">
@@ -152,7 +152,7 @@ export default {
       })
     },
     backShop () {
-      this.$router.push('/main/allproducts')
+      this.$router.push('/allproducts')
     }
   },
   created () {
@@ -164,7 +164,7 @@ export default {
 <style lang="scss" scoped>
   @import url("@fortawesome/fontawesome-free/css/all.css");
   .container{
-      margin-top: 80px;
+      padding-top: 70px;
   }
   .dataEffect {
       &:hover{

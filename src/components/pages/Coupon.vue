@@ -127,7 +127,6 @@ export default {
         vm.isNew = false
         vm.tempCoupon = Object.assign({}, item)
       }
-      console.log(vm.tempCoupon)
     },
     getCoupons (page = 1) {
       const vm = this
@@ -148,7 +147,6 @@ export default {
         apiMethod = 'put'
       }
       this.$http[apiMethod](api, {data: vm.tempCoupon}).then((response) => {
-        console.log(response.data)
         vm.getCoupons()
         $('#couponModal').modal('hide')
       })

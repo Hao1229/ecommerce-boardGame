@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/Index'
+// import Index from '@/components/Index'
 import Main from '@/components/Main'
 import Login from '@/components/pages/Login'
 import DashBoard from '@/components/DashBoard'
@@ -10,10 +10,6 @@ import Coupon from '@/components/pages/Coupon'
 import Orders from '@/components/pages/Orders'
 import Maincontent from '@/components/MainContent'
 import MainAllProducts from '@/components/MainAllProducts'
-import MainPartyProducts from '@/components/MainParty'
-import MainStrategyProducts from '@/components/MainStrategy'
-import MainFamilyProducts from '@/components/MainFamily'
-import MainThemeProducts from '@/components/MainTheme'
 import ProductsDetail from '@/components/ProductsDetail'
 import GetCoupon from '@/components/GetCoupon'
 import Cart from '@/components/ShoppingCart'
@@ -28,13 +24,13 @@ export default new Router({
       path: '*',
       redirect: '/'
     },
+    // {
+    //   path: '/',
+    //   name: 'index',
+    //   component: Index
+    // },
     {
       path: '/',
-      name: 'index',
-      component: Index
-    },
-    {
-      path: '/main',
       component: Main,
       children: [
         {
@@ -46,26 +42,6 @@ export default new Router({
           path: 'allproducts',
           name: 'mainallproducts',
           component: MainAllProducts
-        },
-        {
-          path: 'partyproducts',
-          name: 'partyproducts',
-          component: MainPartyProducts
-        },
-        {
-          path: 'strategyproducts',
-          name: 'strategyproducts',
-          component: MainStrategyProducts
-        },
-        {
-          path: 'familygyproducts',
-          name: 'familygyproducts',
-          component: MainFamilyProducts
-        },
-        {
-          path: 'themeproducts',
-          name: 'themeproducts',
-          component: MainThemeProducts
         },
         {
           path: 'products/:Id',

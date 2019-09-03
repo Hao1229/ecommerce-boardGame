@@ -12,31 +12,36 @@
           <img src="https://i.imgur.com/HXIW7B2.png" class="logo">
         </div>
     </div>
+    <div class="bg-light">
     <div class="container pb-5 pb-md-0">
-        <section class="row">
-            <div class="col-md-6 mb-3 mb-md-0">
-                <div class="adBg mt-3 p-4 h-100 animated">
-                    <router-link to="main/allproducts" class="textNodecoration">
-                      <div class="text-center d-flex flex-column adAnimation">
-                        <i class="fas fa-birthday-cake fa-3x text-primary"></i>
-                        <span class="display-3 mb-3 text-primary">週年慶大促銷</span>
-                        <span class="h2 text-dark font-italic">全館商品特價</span>
-                      </div>
-                    </router-link>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="couponBg mt-3 p-4 h-100 animated">
-                    <router-link to="main/getcoupon" class="textNodecoration">
-                      <div class="text-center d-flex flex-column couponAnimation">
-                        <i class="fas fa-ticket-alt fa-3x text-success"></i>
-                        <span class="display-3 mb-3 text-success"> 優惠卷加碼送 </span>
-                        <span class="h2 text-dark font-italic">取得優惠卷 Go~</span>
-                      </div>
-                    </router-link>
-                </div>
-            </div>
-        </section>
+      <section class="timeline-section pt-5">
+        <div class="row animated">
+          <div class="mt-3 col-6">
+            <router-link to="/allproducts">
+              <img src="https://images.unsplash.com/photo-1531956531700-dc0ee0f1f9a5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" class="RWDadImg">
+            </router-link>
+          </div>
+          <div class="col-6">
+            <router-link to="/allproducts" class="RWDadTitle">週年慶大促銷</router-link>
+            <p class="h2 mt-5 RWDadTitle">全館商品大特價</p>
+            <p class="h2 mt-5 RWDadTitle">不限金額、數量，全館免運</p>
+            <p class="h2 mt-5 RWDadTitle">7天鑑賞期，不滿意退貨</p>
+          </div>
+        </div>
+        <div class="row animated mt-3">
+          <div class="col-6">
+            <router-link to="/getcoupon" class="RWDadTitle">優惠卷大放送</router-link>
+            <p class="h2 mt-5 RWDadTitle">回答問卷領取優惠卷</p>
+            <p class="h2 mt-5 RWDadTitle">多種優惠卷、多種折扣</p>
+            <p class="h2 mt-5 RWDadTitle">全館商品皆可使用</p>
+          </div>
+          <div class="mt-3 col-6">
+            <router-link to="/getcoupon">
+              <img src="https://images.unsplash.com/photo-1521685468847-de0a1a3c41a8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" class="RWDadImg">
+            </router-link>
+          </div>
+        </div>
+      </section>
         <section>
           <div class="mt-5 text-center d-flex align-items-center">
             <div class="bg-dark flex-fill" style="height:2px"></div>
@@ -45,21 +50,22 @@
           </div>
           <div class="row mt-3 pb-5">
             <div class="col-4 position-relative animated" v-for="item in productHot" :key="item.id">
-              <img :src="item.imageUrl" class="h-75 w-100">
+              <img :src="item.imageUrl" class="mh-75 mw-100 pointer" @click="gotoDetail(item.id)">
               <div class="h4 text-center w-100 mt-2">{{item.title}}</div>
               <div class="text-center">
                 <span class="h5" v-if="!item.price">NT{{item.origin_price | currency}}</span>
                 <span class="h5 text-muted" v-if="item.price"><s>NT{{item.origin_price | currency}}</s></span>
                 <span class="h5 ml-1" v-if="item.price">NT{{item.price | currency}}</span>
               </div>
-              <div class="addtoCart p-2 d-none d-md-block" @click="addtoCart(item.id)">
+              <div class="addtoCart p-2 d-none d-lg-block" @click="addtoCart(item.id)">
                 <i class="fas fa-cart-plus fa-3x"></i>
               </div>
             </div>
           </div>
         </section>
     </div>
-    <section class="realshopsectionBg">
+    </div>
+    <section>
       <div class="p-4 text-center realshopBg">
           <span class="h3">實體店面服務</span>
           <div class="row mt-4 border-bottom border-dark">
@@ -147,9 +153,12 @@ export default {
       }
       vm.isLoading = true
       this.$http.post(api, {data: product}).then((response) => {
-        vm.isLoading = false
         vm.$bus.$emit('update:cart')
+        vm.isLoading = false
       })
+    },
+    gotoDetail (id) {
+      this.$router.push(`/products/${id}`)
     }
   },
   created () {
@@ -160,18 +169,29 @@ export default {
 
 <style lang="scss" scoped>
      @import url("@fortawesome/fontawesome-free/css/all.css");
-     .adBg{
-        background: -webkit-linear-gradient(left top,#90EE90,#AFEEEE);
-        background: -o-linear-gradient(bottom right,#90EE90,#AFEEEE);
-        background: -moz-linear-gradient(bottom right,#90EE90,#AFEEEE);
-        background: linear-gradient(to bottom right,#90EE90,#AFEEEE);
-     }
-     .couponBg{
-        background: -webkit-linear-gradient(left top,#FFD700,#FA8072);
-        background: -o-linear-gradient(bottom right,#FFD700,#FA8072);
-        background: -moz-linear-gradient(bottom right,#FFD700,#FA8072);
-        background: linear-gradient(to bottom right,#FFD700,#FA8072);
-     }
+      .timeline-section{
+        position: relative;
+      }
+      .timeline-section::after{
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        background: gray;
+        width: 3px;
+        transform: translateX(-50%);
+      }
+      .RWDadTitle{
+        font-size: 40px;
+        @media(max-width: 768px){
+          font-size: 20px
+        }
+      }
+      .RWDadImg{
+        max-height: 100%;
+        max-width: 100%;
+      }
      .textNodecoration{
         text-decoration: none
      }
@@ -199,7 +219,7 @@ export default {
     }
     .addtoCart{
       position: absolute;
-      top: 63%;
+      top: 70%;
       left: 3%;
       background-color: rgba($color: white, $alpha: 0.8);
       transition: all .5s;
@@ -225,6 +245,11 @@ export default {
       background-size: cover
     }
     .realshopBg{
-      background-color: rgba($color: #D3D3D3, $alpha: 0.7);
+      background-color: rgba($color: #D2691E, $alpha: 0.6);
+    }
+    .pointer{
+      &:hover{
+        cursor: pointer;
+      }
     }
 </style>

@@ -103,7 +103,7 @@ export default {
 <style lang="scss" scoped>
     @import url("@fortawesome/fontawesome-free/css/all.css");
     .container{
-      margin-top: 80px;
+      padding-top: 70px;
     }
     .tableBorder{
       border-bottom: solid 3px rgba($color: #DCDCDC, $alpha: 0.8)

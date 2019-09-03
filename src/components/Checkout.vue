@@ -134,7 +134,7 @@ export default {
             vm.getCart()
             this.$bus.$emit('update:cart')
             if (response.data.success) {
-              vm.$router.push(`/main/checkoutorder/${response.data.orderId}`)
+              vm.$router.push(`/checkoutorder/${response.data.orderId}`)
             }
           })
         } else {
@@ -153,7 +153,7 @@ export default {
 <style lang="scss" scoped>
     @import url("@fortawesome/fontawesome-free/css/all.css");
     .container{
-      margin-top: 80px;
+      padding-top: 70px;
     }
     .cartEffect {
       &:hover{

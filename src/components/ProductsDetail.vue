@@ -29,7 +29,7 @@
              </div>
            </div>
             <div class="mt-5">
-             <span class="h3 backstep" @click="backStep"><i class="fas fa-hand-point-left mr-2"></i>繼續選購</span>
+             <span class="h3 backstep" @click="backShop"><i class="fas fa-hand-point-left mr-2"></i>繼續選購</span>
            </div>
          </div>
        </div>
@@ -78,8 +78,8 @@ export default {
         vm.isAdding = false
       })
     },
-    backStep () {
-      this.$router.go(-1)
+    backShop () {
+      this.$router.push('/allproducts')
     }
   },
   created () {

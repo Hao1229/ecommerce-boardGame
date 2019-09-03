@@ -12,11 +12,11 @@
           <!-- 漢堡選單icon -->
           <div class="mr-4 h4 text-primary d-md-none my-2 pointer" @click="showOffcanvas"><i class="fas fa-bars"></i></div>
           <!-- pad以上解析度出現的Navbar按鈕 -->
-          <ul class="mainNavbar d-md-flex flex-md-row-reverse mr-5 align-items-md-center liststyleNone mb-0">
-              <li>
+          <ul class="mainNavbar d-flex flex-row-reverse p-0 m-0 mr-5 liststyleNone h-100">
+              <li class="py-3">
                   <router-link to="/login" class="mainNavbarBtn pt-2 h5"><i class="fas fa-user mr-2"></i>後台登入</router-link>
               </li>
-               <li class="position-relative" @mouseleave="couponHide">
+               <li class="position-relative h-100 py-3" @mouseleave="couponHide">
                     <div class="couponTable d-none bg-primary" :class="{'p-4':tempCoupons.length === 0}" @mouseleave="couponHide">
                       <span class="h5 text-white text-nowrap" v-if="tempCoupons.length === 0">您尚未有任何優惠卷</span>
                       <router-link :to="{name:'getcoupon'}" v-if="tempCoupons.length === 0" class="h5 btn btn-outline-light mt-3">拿取優惠卷</router-link>
@@ -37,9 +37,9 @@
                         </tbody>
                       </table>
                   </div>
-                  <a href="#" class="mainNavbarBtn mr-4 pt-2 h5" @mouseenter="couponShow"><i class="fas fa-ticket-alt mr-2"></i>優惠卷<i class="fas fa-angle-down ml-2"></i></a>
+                  <a href="#" class="mainNavbarBtn mr-4 pt-2 h5 h-100" @mouseenter="couponShow"><i class="fas fa-ticket-alt mr-2"></i>優惠卷<i class="fas fa-angle-down ml-2"></i></a>
               </li>
-              <li class="position-relative" @mouseleave="cartHide">
+              <li class="position-relative py-3" @mouseleave="cartHide">
                   <div class="bg-primary cartTable d-none px-5" @mouseleave="cartHide">
                     <ul v-if="cartList.length > 0" class="liststyleNone px-0 mx-0 pr-5" style="overflow-y:auto;max-height:50vh">
                       <li v-for="item in cartList" :key="item.id" class="border-bottom border-light position-relative mt-2 pb-2">
@@ -65,27 +65,10 @@
                       </li>
                     </ul>
                   </div>
-                  <a href="#" class="mainNavbarBtn mr-4 pt-2 h5" @mouseenter="cartShow"><i class="fas fa-shopping-cart mr-2"></i>購物車<i class="fas fa-angle-down ml-2"></i></a>
+                  <a href="#" class="mainNavbarBtn mr-4 pt-2 h5" @mouseenter="cartShow"><i class="fas fa-shopping-cart mr-2"><span class="cartCount border border-light rounded-circle" v-if="cartList.length > 0">{{cartList.length}}</span></i>購物車<i class="fas fa-angle-down ml-2"></i></a>
               </li>
-              <li class="position-relative" @mouseleave="producttableHide">
-                  <div class="bg-primary productTable d-none" @mouseleave="producttableHide">
-                      <table class="table table-borderless">
-                        <tbody>
-                            <tr>
-                              <td><router-link :to="{name:'mainallproducts'}" class="btn btn-light text-nowrap">全部遊戲</router-link></td>
-                            </tr>
-                            <tr>
-                            <td><router-link :to="{name:'partyproducts'}" class="btn btn-light text-nowrap">派對遊戲</router-link></td>
-                            <td><router-link :to="{name:'strategyproducts'}" class="btn btn-light text-nowrap">策略遊戲</router-link></td>
-                            </tr>
-                            <tr>
-                            <td><router-link :to="{name:'familygyproducts'}" class="btn btn-light text-nowrap">家庭遊戲</router-link></td>
-                            <td><router-link :to="{name:'themeproducts'}" class="btn btn-light text-nowrap">主題遊戲</router-link></td>
-                            </tr>
-                        </tbody>
-                      </table>
-                  </div>
-                  <a href="#" class="mainNavbarBtn mr-4 pt-2 h5" @mouseenter="producttableShow"><i class="fas fa-shopping-bag mr-2"></i>全部商品<i class="fas fa-angle-down ml-2"></i></a>
+              <li class="py-3">
+                  <router-link class="mainNavbarBtn mr-4 pt-2 h5" :to="{name:'mainallproducts'}"><i class="fas fa-shopping-bag mr-2"></i>商品列表</router-link>
               </li>
           </ul>
       </div>
@@ -97,7 +80,7 @@
                   <router-link to="/login" class="mainNavbarBtn pt-2 h3"><i class="fas fa-user mr-2"></i>後台登入</router-link>
               </li>
               <li class="mt-5 p-0 m-0">
-                  <a href="#" class="mainNavbarBtn pt-2 h3 d-block text-center" @click="RWDcartshow"><i class="fas fa-shopping-cart mr-2"></i>購物車<i class="fas fa-angle-down ml-2" :class="{'fa-angle-up': cartExpand}"></i></a>
+                  <a href="#" class="mainNavbarBtn pt-2 h3 d-block text-center" @click="RWDcartshow"><i class="fas fa-shopping-cart mr-2"><span class="cartCount border border-light rounded-circle" v-if="cartList.length > 0">{{cartList.length}}</span></i>購物車<i class="fas fa-angle-down ml-2" :class="{'fa-angle-up': cartExpand}"></i></a>
                    <div class="bg-primary RWDcart">
                       <table class="table">
                         <tbody v-if="cartList.length > 0">
@@ -158,24 +141,7 @@
                   </div>
               </li>
               <li class="my-5 p-0 m-0">
-                  <a href="#" class="mainNavbarBtn pt-2 h3  d-block text-center" @click="RWDproductshow"><i class="fas fa-shopping-bag mr-2"></i>全部商品<i class="fas fa-angle-down ml-2" :class="{'fa-angle-up': productsExpand}"></i></a>
-                    <div class="bg-primary RWDproducts">
-                      <table class="table table-borderless">
-                        <tbody>
-                            <tr>
-                              <td><router-link :to="{name:'mainallproducts'}" class="btn btn-light text-nowrap">全部遊戲</router-link></td>
-                            </tr>
-                            <tr>
-                            <td><router-link :to="{name:'partyproducts'}" class="btn btn-light text-nowrap">派對遊戲</router-link></td>
-                            <td><router-link :to="{name:'strategyproducts'}" class="btn btn-light text-nowrap">策略遊戲</router-link></td>
-                            </tr>
-                            <tr>
-                            <td><router-link :to="{name:'familygyproducts'}" class="btn btn-light text-nowrap">家庭遊戲</router-link></td>
-                            <td><router-link :to="{name:'themeproducts'}" class="btn btn-light text-nowrap">主題遊戲</router-link></td>
-                            </tr>
-                        </tbody>
-                      </table>
-                  </div>
+                  <router-link class="mainNavbarBtn pt-2 h3  d-block text-center" :to="{name:'mainallproducts'}"><i class="fas fa-shopping-bag mr-2"></i>商品列表</router-link>
               </li>
           </ul>
       </aside>
@@ -209,12 +175,6 @@ export default {
       vm.couponExpand = false
       vm.cartExpand = false
       vm.productsExpand = false
-    },
-    producttableShow () {
-      $('.productTable').addClass('d-block')
-    },
-    producttableHide () {
-      $('.productTable').removeClass('d-block')
     },
     cartShow () {
       $('.cartTable').addClass('d-block')
@@ -263,10 +223,12 @@ export default {
     removeCart (id) {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
       const vm = this
+      vm.isLoading = true
       this.$http.delete(api).then((response) => {
         vm.getCarts()
         if (vm.cartList.length === 0) {
           vm.cartExpand = false
+          vm.isLoading = false
         }
       })
     },
@@ -363,9 +325,8 @@ export default {
         }
     }
     .mainNavbar{
-        padding: 20px 0 ;
         @media(max-width: 767px){
-            display: none
+            display: none !important
         }
     }
     .offcanvas{
@@ -410,7 +371,7 @@ export default {
     }
     .productTable{
         position: absolute;
-        top: 45px;
+        top: 48px;
         z-index: 999;
            &::before{
                 content: '';
@@ -425,7 +386,7 @@ export default {
     }
     .cartTable{
         position: absolute;
-        top: 45px;
+        top: 48px;
         z-index: 999;
            &::before{
                 content: '';
@@ -440,7 +401,7 @@ export default {
     }
     .couponTable{
         position: absolute;
-        top: 45px;
+        top: 48px;
         z-index: 999;
            &::before{
                 content: '';
@@ -476,5 +437,16 @@ export default {
     .RWDproducts-active{
         max-height: 200px ;
         transition:  max-height 1.5s;
+    }
+    .cartCount{
+      padding: 2px 5px;
+      background-color: rgba($color: white, $alpha: 0.9);
+      position: absolute;
+      top: -4px;
+      left: -8px;
+      @media(max-width: 767px){
+        top: -5px;
+        left: 3px;
+      }
     }
 </style>
