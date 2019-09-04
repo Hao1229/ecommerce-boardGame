@@ -1,21 +1,14 @@
 <template>
     <div class="fixed-top">
-      <loading :active.sync="isLoading" :is-full-page="true">
-        <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-        <template slot="default">
-          <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-        </template>
-        <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-      </loading>
       <div class="d-flex justify-content-between align-items-center navbarBg">
           <router-link to="/" class="text-primary navbarIcon ml-3 h3 my-2"><i class="fas fa-chess-knight mr-2"></i>桌迷藏</router-link>
           <!-- 漢堡選單icon -->
           <div class="mr-4 h4 text-primary d-md-none my-2 pointer" @click="showOffcanvas"><i class="fas fa-bars"></i></div>
           <!-- pad以上解析度出現的Navbar按鈕 -->
-          <ul class="mainNavbar d-flex flex-row-reverse p-0 m-0 mr-5 liststyleNone h-100">
-              <li class="py-3">
+          <ul class="mainNavbar d-flex p-0 m-0 mr-5 liststyleNone h-100">
+              <!-- <li class="py-3">
                   <router-link to="/login" class="mainNavbarBtn pt-2 h5"><i class="fas fa-user mr-2"></i>後台登入</router-link>
-              </li>
+              </li> -->
                <li class="position-relative h-100 py-3" @mouseleave="couponHide">
                     <div class="couponTable d-none bg-primary" :class="{'p-4':tempCoupons.length === 0}" @mouseleave="couponHide">
                       <span class="h5 text-white text-nowrap" v-if="tempCoupons.length === 0">您尚未有任何優惠卷</span>
@@ -54,6 +47,8 @@
                             <span class="text-white">小計：</span><span class="font-weight-bold text-white">NT{{cartTotal | currency}}</span>
                          </div>
                       </li>
+                    </ul>
+                    <ul v-if="cartList.length > 0" class="liststyleNone px-0 mx-0 pr-5">
                       <li class="my-2">
                         <router-link :to="{name:'cart'}" class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</router-link>
                         <router-link :to="{name:'checkout'}" class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</router-link>
@@ -65,7 +60,8 @@
                       </li>
                     </ul>
                   </div>
-                  <a href="#" class="mainNavbarBtn mr-4 pt-2 h5" @mouseenter="cartShow"><i class="fas fa-shopping-cart mr-2"><span class="cartCount border border-light rounded-circle" v-if="cartList.length > 0">{{cartList.length}}</span></i>購物車<i class="fas fa-angle-down ml-2"></i></a>
+                  <a href="#" class="mainNavbarBtn mr-4 pt-2 h5" @mouseenter="cartShow"><i class="fas fa-shopping-cart mr-2 position-relative"></i>購物車<i class="fas fa-angle-down ml-2"></i></a>
+                  <div class="cartCount border border-white rounded-circle text-center align-middle text-primary" v-if="cartList.length > 0">{{cartList.length}}</div>
               </li>
               <li class="py-3">
                   <router-link class="mainNavbarBtn mr-4 pt-2 h5" :to="{name:'mainallproducts'}"><i class="fas fa-shopping-bag mr-2"></i>商品列表</router-link>
@@ -75,12 +71,13 @@
       <!-- pad以下解析度並點擊漢堡icon才會出現的 offcanvas -->
       <aside class="side min-vw-100 min-vh-100">
            <ul class="liststyleNone p-0 m-0 px-2 offcanvas">
-             <i class="fas fa-times-circle cancel text-primary fa-2x" @click="closeOffcanvas"></i>
-              <li class="mt-5 d-flex justify-content-center p-0 m-0">
+             <i class="fas fa-times-circle cancel text-primary fa-2x" @click.prevent="closeOffcanvas"></i>
+              <!-- <li class="mt-5 d-flex justify-content-center p-0 m-0">
                   <router-link to="/login" class="mainNavbarBtn pt-2 h3"><i class="fas fa-user mr-2"></i>後台登入</router-link>
-              </li>
-              <li class="mt-5 p-0 m-0">
-                  <a href="#" class="mainNavbarBtn pt-2 h3 d-block text-center" @click="RWDcartshow"><i class="fas fa-shopping-cart mr-2"><span class="cartCount border border-light rounded-circle" v-if="cartList.length > 0">{{cartList.length}}</span></i>購物車<i class="fas fa-angle-down ml-2" :class="{'fa-angle-up': cartExpand}"></i></a>
+              </li> -->
+              <li class="mt-5 p-0 m-0 position-relative">
+                  <a href="#" class="mainNavbarBtn pt-2 h3 d-block text-center" @click.prevent="RWDcartshow"><i class="fas fa-shopping-cart mr-2 position-relative"></i>購物車<i class="fas fa-angle-down ml-2" :class="{'fa-angle-up': cartExpand}"></i></a>
+                  <div class="cartCount border border-white rounded-circle text-center align-middle text-primary" v-if="cartList.length > 0">{{cartList.length}}</div>
                    <div class="bg-primary RWDcart">
                       <table class="table">
                         <tbody v-if="cartList.length > 0">
@@ -90,7 +87,7 @@
                                     <h5>{{item.product.title}}</h5>
                                     <span>{{item.qty}}{{item.product.unit}} x </span><span>NT{{item.product.price | currency}}</span>
                                 </div>
-                                <i class="fas fa-times-circle cancel text-white" @click="removeCart(item.id)"></i>
+                                <i class="fas fa-times-circle cancel text-white" @click.prevent="removeCart(item.id)"></i>
                             </td>
                             </tr>
                             <tr>
@@ -118,7 +115,7 @@
                   </div>
               </li>
                    <li class="mt-5 p-0 m-0">
-                  <a href="#" class="mainNavbarBtn pt-2 h3 d-block text-center" @click="RWDcouponsShow"><i class="fas fa-ticket-alt mr-2"></i>優惠卷<i class="fas fa-angle-down ml-2"  :class="{'fa-angle-up': couponExpand}"></i></a>
+                  <a href="#" class="mainNavbarBtn pt-2 h3 d-block text-center" @click.prevent="RWDcouponsShow"><i class="fas fa-ticket-alt mr-2"></i>優惠卷<i class="fas fa-angle-down ml-2"  :class="{'fa-angle-up': couponExpand}"></i></a>
                   <div class="bg-primary RWDcoupons" :class="{'text-center':tempCoupons.length === 0}">
                       <span class="h5 text-white text-nowrap" v-if="tempCoupons.length === 0">您尚未有任何優惠卷</span><br>
                       <router-link :to="{name:'getcoupon'}" v-if="tempCoupons.length === 0" class="h5 btn btn-outline-light mt-3">拿取優惠卷</router-link>
@@ -134,7 +131,7 @@
                             <tr class="text-nowrap text-white" v-for="(item, i) in tempCoupons" :key="item.code">
                             <td>{{item.title}}</td>
                             <td class="text-center">{{item.code}}</td>
-                            <td class="pointer" @click="removeCoupon(i)"><i class="fas fa-trash"></i></td>
+                            <td class="pointer" @click.prevent="removeCoupon(i)"><i class="fas fa-trash"></i></td>
                             </tr>
                         </tbody>
                       </table>
@@ -157,7 +154,6 @@ export default {
       couponExpand: false,
       cartExpand: false,
       productsExpand: false,
-      isLoading: false,
       cartList: [],
       cartTotal: null
     }
@@ -210,25 +206,26 @@ export default {
         vm.couponExpand = false
       }
     },
-    getCarts () {
+    getCarts (status) {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
       const vm = this
-      vm.isLoading = true
+      if (status !== 'stop') {
+        vm.$bus.$emit('loading: push', 'start')
+      }
       this.$http.get(api).then((response) => {
         vm.cartList = response.data.data.carts
         vm.cartTotal = response.data.data.final_total
-        vm.isLoading = false
+        vm.$bus.$emit('loading: push', 'stop')
       })
     },
     removeCart (id) {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$http.delete(api).then((response) => {
-        vm.getCarts()
+        vm.getCarts('stop')
         if (vm.cartList.length === 0) {
           vm.cartExpand = false
-          vm.isLoading = false
         }
       })
     },
@@ -250,8 +247,8 @@ export default {
   created () {
     this.getCarts()
     const vm = this
-    vm.$bus.$on('update:cart', () => {
-      vm.getCarts()
+    vm.$bus.$on('update:cart', (status) => {
+      vm.getCarts(status)
     })
     vm.$bus.$on('coupon:get', (title, code) => {
       vm.updateCoupons(title, code)
@@ -336,7 +333,7 @@ export default {
         right: 0;
         bottom: 0;
         background-color: rgba($color: #DCDCDC, $alpha: 0.8);
-        overflow: auto
+        overflow: auto;
     }
     .side{
         position: absolute;
@@ -344,7 +341,7 @@ export default {
         bottom: 0;
         background-color: rgba($color:#696969, $alpha: 0.7);
         transition: all .3s;
-        transform: translateX(-100vw);
+        transform: translateX(100vw);
         overflow: hidden;
     }
     .offcanvasShow{
@@ -439,14 +436,16 @@ export default {
         transition:  max-height 1.5s;
     }
     .cartCount{
-      padding: 2px 5px;
+      font-size: 10px;
       background-color: rgba($color: white, $alpha: 1.0);
       position: absolute;
-      top: -4px;
-      left: -8px;
+      top: 5px;
+      left: 10px;
+      width: 20px;
+      height: 20px;
       @media(max-width: 767px){
-        top: -5px;
-        left: 3px;
+        top: 0;
+        left: 38px;
       }
     }
 </style>

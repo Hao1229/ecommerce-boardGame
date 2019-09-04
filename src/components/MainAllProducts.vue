@@ -12,11 +12,11 @@
             <div class="text-center mb-3 mb-md-0" style="position:sticky;top:80px;">
               <span class="h4 d-none d-md-inline">遊戲分類</span>
               <div class="list-group list-group-flush mt-md-3 mt-0">
-                <a href="#" class="list-group-item list-group-item-action pointer list-group-item-warning" @click.prevent="changeCategory('全部遊戲')">全部遊戲</a>
-                <a href="#" class="list-group-item list-group-item-action pointer list-group-item-warning" @click.prevent="changeCategory('派對遊戲')">派對遊戲</a>
-                <a href="#" class="list-group-item list-group-item-action pointer list-group-item-warning" @click.prevent="changeCategory('策略遊戲')">策略遊戲</a>
-                <a href="#" class="list-group-item list-group-item-action pointer list-group-item-warning" @click.prevent="changeCategory('家庭遊戲')">家庭遊戲</a>
-                <a href="#" class="list-group-item list-group-item-action pointer list-group-item-warning" @click.prevent="changeCategory('主題遊戲')">主題遊戲</a>
+                <a href="#" class="list-group-item list-group-item-action list-group-item-light" :class="{'active':activeItem.active === '全部遊戲'}" @click.prevent="changeCategory('全部遊戲')">全部遊戲</a>
+                <a href="#" class="list-group-item list-group-item-action list-group-item-light" :class="{'active':activeItem.active === '派對遊戲'}" @click.prevent="changeCategory('派對遊戲')">派對遊戲</a>
+                <a href="#" class="list-group-item list-group-item-action list-group-item-light" :class="{'active':activeItem.active === '策略遊戲'}" @click.prevent="changeCategory('策略遊戲')">策略遊戲</a>
+                <a href="#" class="list-group-item list-group-item-action list-group-item-light" :class="{'active':activeItem.active === '家庭遊戲'}" @click.prevent="changeCategory('家庭遊戲')">家庭遊戲</a>
+                <a href="#" class="list-group-item list-group-item-action list-group-item-light" :class="{'active':activeItem.active === '主題遊戲'}" @click.prevent="changeCategory('主題遊戲')">主題遊戲</a>
               </div>
             </div>
           </div>
@@ -41,7 +41,10 @@ export default {
       allProducts: [],
       nowCategory: [],
       nowCategoryTilte: '',
-      isLoading: false
+      isLoading: false,
+      activeItem: {
+        active: ''
+      }
     }
   },
   methods: {
@@ -53,6 +56,7 @@ export default {
         vm.allProducts = response.data.products
         vm.nowCategory = vm.allProducts
         vm.nowCategoryTilte = '全部遊戲'
+        vm.activeItem.active = '全部遊戲'
         vm.isLoading = false
       })
     },
@@ -61,10 +65,12 @@ export default {
       vm.nowCategoryTilte = category
       if (category === '全部遊戲') {
         vm.nowCategory = vm.allProducts
+        vm.activeItem.active = '全部遊戲'
       } else if (category !== '全部遊戲') {
         vm.nowCategory = vm.allProducts.filter((item) => {
           return item.category === category
         })
+        vm.activeItem.active = category
       }
     }
   },

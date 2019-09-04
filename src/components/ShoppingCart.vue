@@ -1,12 +1,5 @@
 <template>
     <div class="container min-vh-100 mb-3">
-         <loading :active.sync="isLoading" :is-full-page="true">
-            <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-            <template slot="default">
-            <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-            </template>
-            <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-        </loading>
         <section>
             <div class="text-center pt-5 d-none d-md-block">
                 <span class="h2 text-secondary">購物車列表</span>
@@ -91,13 +84,14 @@
                         </table>
                     </div>
                     <router-link :to="{name:'checkout'}" class="btn btn-block btn-secondary">前 往 結 帳</router-link>
-                    <div class="mt-3 borderCustomized pb-2">
-                        <div class="form-group">
-                            <label for="coupon"><i class="fas fa-ticket-alt text-secondary mr-2"></i>優惠卷</label>
-                            <input type="text" class="form-control" id="coupon" placeholder="輸入優惠卷代碼" v-model="couponCode">
+                    <div class="mt-3 borderCustomized pt-3">
+                        <div class="input-group-sm mb-3 input-group">
+                            <input type="text" class="form-control" placeholder="輸入優惠卷代碼" v-model="couponCode">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" @click="useCoupon">套用優惠卷</button>
+                            </div>
                         </div>
                     </div>
-                    <button class="btn btn-block btn-primary mt-3 mb-3 mb-md-0" @click="useCoupon">套 用 優 惠 卷</button>
                 </div>
             </div>
         </section>
@@ -110,45 +104,41 @@ export default {
     return {
       cartList: [],
       carts: [],
-      isLoading: false,
       couponCode: ''
     }
   },
   methods: {
-    getCart () {
+    getCart (item) {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
       const vm = this
-      vm.isLoading = true
+      if (item !== 'noRepeat') {
+        vm.$bus.$emit('loading: push', 'start')
+      }
       this.$http.get(api).then((response) => {
         vm.cartList = response.data.data.carts
         vm.carts = response.data.data
-        console.log(vm.cartList)
-        vm.isLoading = false
+        this.$bus.$emit('update:cart', 'stop')
       })
     },
     removeCart (id) {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$http.delete(api).then((response) => {
-        vm.getCart()
-        this.$bus.$emit('update:cart')
-        vm.isLoading = false
+        vm.getCart('noRepeat')
       })
     },
     useCoupon () {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/coupon`
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$http.post(api, {data: {code: vm.couponCode}}).then((response) => {
-        console.log(response.data)
         if (response.data.success) {
           this.$bus.$emit('message:push', response.data.message, 'success')
         } else {
           this.$bus.$emit('message:push', response.data.message, 'danger')
         }
-        vm.getCart()
-        vm.isLoading = false
+        vm.getCart('noRepeat')
       })
     },
     backShop () {
@@ -188,6 +178,6 @@ export default {
       }
     }
   .borderCustomized{
-      border-bottom: solid 3px rgba($color: #DCDCDC, $alpha: 0.8)
+      border-top: solid 3px rgba($color: #DCDCDC, $alpha: 0.8)
   }
 </style>

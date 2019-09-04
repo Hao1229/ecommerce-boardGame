@@ -1,15 +1,15 @@
 <template>
     <div class="container mb-4">
-        <loading :active.sync="isLoading" :is-full-page="true">
+        <!-- <loading :active.sync="isLoading" :is-full-page="true">
         <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
         <template slot="default">
           <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
         </template>
         <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-       </loading>
+       </loading> -->
        <div class="row min-vh-100">
-         <div class="col-lg-5">
-           <img :src="productDetail.imageUrl" class="w-100 h-100 heightRwd">
+         <div class="col-lg-5 text-center">
+           <img :src="productDetail.imageUrl" class="detailImg">
          </div>
          <div class="col-lg-7 mt-3 mt-lg-0">
            <h3 class="text-secondary font-weight-bold">{{productDetail.title}}</h3>
@@ -42,7 +42,6 @@ export default {
     return {
       productId: '',
       productDetail: [],
-      isLoading: false,
       productQty: '1',
       isAdding: false
     }
@@ -50,11 +49,11 @@ export default {
   methods: {
     getDetail () {
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/product/${vm.productId}`
       this.$http.get(api).then((response) => {
         vm.productDetail = response.data.product
-        vm.isLoading = false
+        vm.$bus.$emit('loading: push', 'stop')
       })
     },
     addQty () {
@@ -72,10 +71,9 @@ export default {
         'product_id': vm.productId,
         'qty': vm.productQty
       }
-      vm.isAdding = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$http.post(api, {data: product}).then((response) => {
         vm.$bus.$emit('update:cart')
-        vm.isAdding = false
       })
     },
     backShop () {
@@ -94,11 +92,12 @@ export default {
     .container{
          padding-top: 70px;
      }
-     .heightRwd{
-       @media(min-width: 769px){
-         height: 75% !important;
-       }
-     }
+    .detailImg{
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%
+    }
     input[type='number']::-webkit-inner-spin-button,
     input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;

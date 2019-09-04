@@ -1,12 +1,5 @@
 <template>
 <div class=" bgSet vh-100">
-     <loading :active.sync="isLoading" :is-full-page="true">
-        <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-        <template slot="default">
-          <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-        </template>
-        <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-    </loading>
     <div class="text-center mb-2">
        <router-link to="/main" class="h2"><i class="fas fa-chess-knight mr-2"></i>桌迷藏</router-link>
     </div>
@@ -30,22 +23,21 @@ export default {
       user: {
         username: '',
         password: ''
-      },
-      isLoading: false
+      }
     }
   },
   methods: {
     loginAdmin () {
       const api = `${process.env.APIPATH}/admin/signin`
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$http.post(api, vm.user).then((response) => {
         if (response.data.success) {
           this.$router.push('/admin')
         } else {
           alert('登入資料有誤')
         }
-        vm.isLoading = false
+        vm.$bus.$emit('loading: push', 'stop')
       })
     }
   }

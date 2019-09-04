@@ -1,12 +1,5 @@
 <template>
     <div class="min-vh-100">
-        <loading :active.sync="isLoading" :is-full-page="true">
-            <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-            <template slot="default">
-            <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-            </template>
-            <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-        </loading>
         <div class="d-flex">
            <div class="dropdown ml-auto mt-2">
                 <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -117,7 +110,6 @@ export default {
       orders: [],
       tempUser: {},
       tempMessage: '',
-      isLoading: false,
       pagination: {},
       selectOption: 'all'
     }
@@ -125,12 +117,12 @@ export default {
   methods: {
     getOrders (page = 1) {
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/orders?page=${page}`
       this.$http.get(api).then((response) => {
         vm.orders = response.data.orders
         vm.pagination = response.data.pagination
-        vm.isLoading = false
+        vm.$bus.$emit('loading: push', 'stop')
       })
     },
     openModel (item) {

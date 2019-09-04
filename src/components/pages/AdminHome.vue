@@ -1,12 +1,5 @@
 <template>
     <div class="min-vh-100">
-         <loading :active.sync="isLoading" :is-full-page="true">
-            <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-            <template slot="default">
-            <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-            </template>
-            <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-        </loading>
          <h3 class="font-weight-bold my-3">OVERVIEW</h3>
         <div class="row">
             <div class="col-md-4">
@@ -70,7 +63,6 @@ export default {
   },
   data () {
     return {
-      isLoading: false,
       products: [],
       hotProducts: []
     }
@@ -79,14 +71,13 @@ export default {
     getProducts () {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$http.get(api).then((response) => {
         vm.products = response.data.products
         vm.hotProducts = vm.products.filter((item, i) => {
           return i < 3
         })
-        console.log(vm.hotProducts)
-        vm.isLoading = false
+        vm.$bus.$emit('loading: push', 'stop')
       })
     }
   },

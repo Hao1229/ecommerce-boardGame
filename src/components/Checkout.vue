@@ -1,12 +1,5 @@
 <template>
     <div class="container min-vh-100">
-         <loading :active.sync="isLoading" :is-full-page="true">
-            <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-            <template slot="default">
-            <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-            </template>
-            <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-        </loading>
         <section>
             <div class="text-center pt-5 d-none d-md-block">
                 <router-link :to="{name:'cart'}" class="h2 text-muted cartEffect">購物車列表</router-link>
@@ -93,7 +86,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <button class="btn btn-block btn-outline-secondary" @click="finishOrder">資 料 確 認</button>
+                        <button class="btn btn-block btn-secondary" @click="finishOrder">送 出 訂 單</button>
                     </div>
                 </div>
             </div>
@@ -108,30 +101,27 @@ export default {
       cartList: [],
       carts: [],
       user: {},
-      message: '',
-      isLoading: false
+      message: ''
     }
   },
   methods: {
     getCart () {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$http.get(api).then((response) => {
         vm.cartList = response.data.data.carts
         vm.carts = response.data.data
-        vm.isLoading = false
+        vm.$bus.$emit('loading: push', 'stop')
       })
     },
     finishOrder () {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order`
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$validator.validate().then((valid) => {
         if (valid) {
           this.$http.post(api, {data: {user: vm.user, message: vm.message}}).then((response) => {
-            vm.isLoading = false
-            vm.getCart()
             this.$bus.$emit('update:cart')
             if (response.data.success) {
               vm.$router.push(`/checkoutorder/${response.data.orderId}`)
@@ -139,7 +129,7 @@ export default {
           })
         } else {
           alert('請將資料填寫完整喔~')
-          vm.isLoading = false
+          vm.$bus.$emit('loading: push', 'stop')
         }
       })
     }

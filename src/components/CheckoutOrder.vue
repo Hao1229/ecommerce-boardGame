@@ -1,12 +1,5 @@
 <template>
     <div class="container min-vh-100">
-         <loading :active.sync="isLoading" :is-full-page="true">
-            <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-            <template slot="default">
-            <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-            </template>
-            <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-        </loading>
         <section>
             <div class="text-center pt-5 d-none d-md-block">
                 <span class="h2 text-muted">購物車列表</span>
@@ -63,32 +56,31 @@ export default {
   data () {
     return {
       orderId: '',
-      order: [],
-      isLoading: false
+      order: []
     }
   },
   methods: {
     getOrder () {
       const vm = this
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order/${vm.orderId}`
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$http.get(api).then((response) => {
         vm.order = response.data.order
-        vm.isLoading = false
+        vm.$bus.$emit('loading: push', 'stop')
       })
     },
     payOrder () {
       const vm = this
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/pay/${vm.orderId}`
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$http.post(api).then((response) => {
         if (response.data.success) {
           vm.getOrder()
           this.$bus.$emit('message:push', response.data.message, 'success')
         } else {
           this.$bus.$emit('message:push', '付款失敗', 'danger')
+          vm.$bus.$emit('loading: push', 'stop')
         }
-        vm.isLoading = false
       })
     }
   },

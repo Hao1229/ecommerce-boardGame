@@ -1,12 +1,5 @@
 <template>
     <div>
-        <loading :active.sync="isLoading" :is-full-page="true">
-            <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-            <template slot="default">
-            <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-            </template>
-            <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-       </loading>
           <!-- 卡片產品列表麼模板 -->
             <div class="row">
               <div class="col-md-4 col-6 mb-3" v-for="item in newProducts" :key="item.id">
@@ -35,7 +28,6 @@ export default {
   props: ['getProducts'],
   data () {
     return {
-      isLoading: false,
       status: {
         loadingItem: ''
       }

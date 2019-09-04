@@ -1,12 +1,5 @@
 <template>
    <div class="min-vh-100">
-      <loading :active.sync="isLoading" :is-full-page="true">
-        <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-        <template slot="default">
-          <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-        </template>
-        <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-      </loading>
        <div class="d-flex">
            <button class="btn btn-dark mt-2 ml-auto" @click="openModal(true)">新增優惠卷<i class="fas fa-plus ml-2"></i></button>
        </div>
@@ -109,7 +102,6 @@ export default {
   },
   data () {
     return {
-      isLoading: false,
       coupons: [],
       isNew: '',
       tempCoupon: {},
@@ -130,12 +122,12 @@ export default {
     },
     getCoupons (page = 1) {
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupons?page=${page}`
       this.$http.get(api).then((response) => {
         vm.coupons = response.data.coupons
         vm.pagination = response.data.pagination
-        vm.isLoading = false
+        vm.$bus.$emit('loading: push', 'stop')
       })
     },
     createCoupons () {
@@ -153,11 +145,10 @@ export default {
     },
     removeCoupons () {
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`
       this.$http.delete(api).then((response) => {
         vm.getCoupons()
-        vm.isLoading = false
         $('#delModal').modal('hide')
       })
     },

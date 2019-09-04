@@ -1,12 +1,5 @@
 <template>
     <div>
-        <loading :active.sync="isLoading" :is-full-page="true">
-            <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-                <template slot="default">
-                    <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-                </template>
-            <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-        </loading>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <router-link class="navbar-brand" to="/main"><i class="fas fa-chess-knight mr-2"></i>桌迷藏</router-link>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,20 +30,18 @@
 export default {
   name: 'AdminNavbar',
   data () {
-    return {
-      isLoading: false
-    }
+    return {}
   },
   methods: {
     signoutAdmin () {
       const api = `${process.env.APIPATH}/logout`
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$http.post(api).then((response) => {
         console.log(response.data)
         if (response.data.success) {
           this.$router.push('/login')
-          vm.isLoading = false
+          vm.$bus.$emit('loading: push', 'stop')
         }
       })
     }
