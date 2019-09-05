@@ -11,7 +11,7 @@
                     <p class="d-lg-flex justify-content-between"><s><span class="text-muted mr-2">NT{{item.origin_price | currency}}</span></s><br><span class="h5 text-primary">NT{{item.price | currency}}</span></p>
                     <div class="d-lg-flex justify-content-between">
                       <div>
-                        <button class="addtoCart text-center align-middle" @click="addtoCart(item.id)" :disabled="buttonStatus.isAdd"><i class="fas fa-cart-plus"></i></button>
+                        <button class="addtoCart border rounded-circle border-primary" @click="addtoCart(item.id)" :disabled="buttonStatus.isAdd"><i class="fas fa-cart-plus"></i></button>
                         <i class="fas fa-cog fa-spin ml-2" v-if="status.loadingItem === item.id"></i>
                       </div>
                       <a href="#" @click.prevent="productDetail(item.id)">more..</a>
@@ -74,8 +74,6 @@ export default {
      .addtoCart{
        background-color: transparent;
        outline: none;
-       border: 1px solid #ae0000;
-       border-radius: 50%;
        width: 35px;
        height: 35px;
      }
