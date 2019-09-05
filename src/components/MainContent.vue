@@ -47,16 +47,16 @@
           </div>
           <div class="row mt-3 pb-5">
             <div class="col-4 position-relative animated" v-for="item in productHot" :key="item.id">
-              <img :src="item.imageUrl" class="mh-100 mw-100 pointer" @click="gotoDetail(item.id)">
+              <img :src="item.imageUrl" class="mw-100 pointer" @click="gotoDetail(item.id)">
               <div class="text-center w-100 mt-2">{{item.title}}</div>
               <div class="text-center">
                 <span v-if="!item.price">NT{{item.origin_price | currency}}</span>
                 <span class="text-muted" v-if="item.price"><s>NT{{item.origin_price | currency}}</s></span>
                 <span class="ml-1" v-if="item.price">NT{{item.price | currency}}</span>
               </div>
-              <div class="addtoCart p-2 d-none d-lg-block" @click="addtoCart(item.id)">
+              <button class="addtoCart p-2 d-none d-lg-block" @click="addtoCart(item.id)" :disabled="buttonStatus.isAdd">
                 <i class="fas fa-cart-plus fa-3x"></i>
-              </div>
+              </button>
             </div>
           </div>
         </section>
@@ -126,7 +126,10 @@ export default {
   data () {
     return {
       productAll: [],
-      productHot: []
+      productHot: [],
+      buttonStatus: {
+        isAdd: false
+      }
     }
   },
   methods: {
@@ -143,6 +146,7 @@ export default {
     addtoCart (id) {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
       const vm = this
+      vm.buttonStatus.isAdd = true
       const product = {
         'product_id': id,
         'qty': '1'
@@ -150,6 +154,7 @@ export default {
       vm.$bus.$emit('loading: push', 'start')
       this.$http.post(api, {data: product}).then((response) => {
         vm.$bus.$emit('update:cart')
+        vm.buttonStatus.isAdd = false
       })
     },
     gotoDetail (id) {
@@ -184,7 +189,7 @@ export default {
         }
       }
       .RWDadImg{
-        max-height: 100%;
+        max-height: auto;
         max-width: 100%;
         box-shadow: 10px 10px 10px gray
       }
@@ -196,8 +201,8 @@ export default {
         background-attachment: fixed ;
      }
      .logo{
-         width: 320px;
-         height: 320px;
+         width: 300px;
+         height: 300px;
          opacity: 0.9;
      }
      .adAnimation{
@@ -215,14 +220,12 @@ export default {
     }
     .addtoCart{
       position: absolute;
-      top: 70%;
-      left: 3%;
+      top: 71%;
+      left: 3.5%;
       background-color: rgba($color: white, $alpha: 0.8);
+      outline: none;
+      border: none;
       transition: all .5s;
-      cursor: pointer;
-      @media(max-width: 768px){
-        top: 57%;
-      }
     }
     .animated{
       opacity: 0;

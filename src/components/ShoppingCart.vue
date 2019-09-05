@@ -31,7 +31,7 @@
                                 <td class="align-middle">{{item.qty}}/{{item.product.unit}}</td>
                                 <td class="text-right align-middle" v-if="carts.total !== carts.final_total"><s><span class="text-muted">NT{{item.total | currency}}</span></s><br><span class="text-success">NT{{item.final_total | currency}}</span></td>
                                 <td class="text-right align-middle" v-if="carts.total === carts.final_total">NT{{item.total | currency}}</td>
-                                <td class="text-center align-middle"><i class="fas fa-trash-alt pointer" @click="removeCart(item.id)"></i></td>
+                                <td class="text-center align-middle"><button @click="removeCart(item.id)" :disabled="buttonStatus.isRemove"><i class="fas fa-trash-alt pointer"></i></button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -104,7 +104,10 @@ export default {
     return {
       cartList: [],
       carts: [],
-      couponCode: ''
+      couponCode: '',
+      buttonStatus: {
+        isRemove: false
+      }
     }
   },
   methods: {
@@ -123,9 +126,11 @@ export default {
     removeCart (id) {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
       const vm = this
+      vm.buttonStatus.isRemove = true
       vm.$bus.$emit('loading: push', 'start')
       this.$http.delete(api).then((response) => {
         vm.getCart('noRepeat')
+        vm.buttonStatus.isRemove = false
       })
     },
     useCoupon () {

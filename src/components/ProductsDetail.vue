@@ -96,7 +96,7 @@ export default {
       width: auto;
       height: auto;
       max-width: 100%;
-      max-height: 100%
+      max-height: auto
     }
     input[type='number']::-webkit-inner-spin-button,
     input[type='number']::-webkit-outer-spin-button {

@@ -11,7 +11,7 @@
                     <p class="d-lg-flex justify-content-between"><s><span class="text-muted mr-2">NT{{item.origin_price | currency}}</span></s><br><span class="h5 text-primary">NT{{item.price | currency}}</span></p>
                     <div class="d-lg-flex justify-content-between">
                       <div>
-                        <i class="fas fa-cart-plus pointer border border-primary rounded-circle p-2" @click="addtoCart(item.id)"></i>
+                        <button class="addtoCart text-center align-middle" @click="addtoCart(item.id)" :disabled="buttonStatus.isAdd"><i class="fas fa-cart-plus"></i></button>
                         <i class="fas fa-cog fa-spin ml-2" v-if="status.loadingItem === item.id"></i>
                       </div>
                       <a href="#" @click.prevent="productDetail(item.id)">more..</a>
@@ -30,6 +30,9 @@ export default {
     return {
       status: {
         loadingItem: ''
+      },
+      buttonStatus: {
+        isAdd: false
       }
     }
   },
@@ -37,6 +40,7 @@ export default {
     addtoCart (id) {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
       const vm = this
+      vm.buttonStatus.isAdd = true
       const product = {
         'product_id': id,
         'qty': '1'
@@ -45,6 +49,7 @@ export default {
       this.$http.post(api, {data: product}).then((response) => {
         vm.$bus.$emit('update:cart')
         vm.status.loadingItem = ''
+        vm.buttonStatus.isAdd = false
       })
     },
     productDetail (id) {
@@ -66,10 +71,12 @@ export default {
              cursor: pointer;
          }
      }
-     .fa-cart-plus{
-       &:hover{
-         background-color: rgba($color: #ae0000, $alpha: 0.7);
-         color: white
-       }
+     .addtoCart{
+       background-color: transparent;
+       outline: none;
+       border: 1px solid #ae0000;
+       border-radius: 50%;
+       width: 35px;
+       height: 35px;
      }
 </style>

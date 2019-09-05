@@ -42,7 +42,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-5 pb-3 pb-md-0">
+                <div class="col-md-5 pb-3">
                     <div class="datasureBorder p-3">
                         <p class="h4">訂單資訊<span class="h5 text-success ml-3" v-if="carts.final_total !== carts.total">已套用優惠卷</span></p>
                         <table class="table table-borderless mt-2">
