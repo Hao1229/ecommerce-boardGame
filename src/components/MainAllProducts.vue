@@ -1,12 +1,5 @@
 <template>
     <div class="container min-vh-100">
-       <loading :active.sync="isLoading" :is-full-page="true">
-        <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-        <template slot="default">
-          <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-        </template>
-        <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-       </loading>
       <div class="row">
           <div class="col-md-3">
             <div class="text-center mb-3 mb-md-0" style="position:sticky;top:80px;">
@@ -41,7 +34,6 @@ export default {
       allProducts: [],
       nowCategory: [],
       nowCategoryTilte: '',
-      isLoading: false,
       activeItem: {
         active: ''
       }
@@ -51,13 +43,13 @@ export default {
     getProducts () {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
       const vm = this
-      vm.isLoading = true
+      vm.$bus.$emit('loading: push', 'start')
       this.$http.get(api).then((response) => {
         vm.allProducts = response.data.products
         vm.nowCategory = vm.allProducts
         vm.nowCategoryTilte = '全部遊戲'
         vm.activeItem.active = '全部遊戲'
-        vm.isLoading = false
+        vm.$bus.$emit('loading: push', 'stop')
       })
     },
     changeCategory (category) {

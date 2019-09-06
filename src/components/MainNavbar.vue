@@ -6,6 +6,10 @@
           <div class="mr-4 h4 text-primary d-md-none my-2 pointer" @click="showOffcanvas"><i class="fas fa-bars"></i></div>
           <!-- pad以上解析度出現的Navbar按鈕 -->
           <div class="mainNavbar d-flex h-100">
+             <!-- 商品列表按鈕 -->
+            <div>
+              <router-link class="mainNavbarBtn mr-4 py-2 h5" :to="{name:'mainallproducts'}"><i class="fas fa-shopping-bag mr-2"></i>商品列表</router-link>
+            </div>
             <!-- 優惠卷按鈕 -->
             <div class="position-relative" @mouseleave="couponHide">
               <a href="#" class="mainNavbarBtn py-2 h5 h-100 mr-3" @mouseenter="couponShow"><i class="fas fa-ticket-alt mr-2"></i>優惠卷<i class="fas fa-angle-down ml-2"></i></a>
@@ -51,7 +55,6 @@
                 <ul v-if="cartList.length > 0" class="liststyleNone px-0 mx-0 pr-5">
                   <li class="my-2">
                     <router-link :to="{name:'cart'}" class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</router-link>
-                    <router-link :to="{name:'checkout'}" class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</router-link>
                   </li>
                 </ul>
                 <ul v-if="cartList.length === 0" class="liststyleNone px-0 mx-0">
@@ -61,10 +64,6 @@
                 </ul>
               </div>
               <div class="cartCount border border-white rounded-circle text-center align-middle text-primary" v-if="cartList.length > 0">{{cartList.length}}</div>
-            </div>
-            <!-- 商品列表按鈕 -->
-            <div>
-              <router-link class="mainNavbarBtn mr-4 py-2 h5" :to="{name:'mainallproducts'}"><i class="fas fa-shopping-bag mr-2"></i>商品列表</router-link>
             </div>
           </div>
       </div>
@@ -101,7 +100,6 @@
                       <tr>
                         <td>
                           <router-link :to="{name:'cart'}" class="btn btn-block btn-info btn-lg text-nowrap">前往購物車</router-link>
-                          <router-link :to="{name:'checkout'}" class="btn btn-block btn-success btn-lg text-nowrap mt-2">結帳</router-link>
                         </td>
                       </tr>
                     </tbody>
@@ -330,6 +328,10 @@ export default {
         }
     }
     .mainNavbar{
+        padding-right: 85px;
+        @media(max-width: 768px){
+          padding-right: 70px;
+        }
         @media(max-width: 767px){
             display: none !important
         }
@@ -386,12 +388,13 @@ export default {
     .cartTable{
         position: absolute;
         top: 35px;
+        left: -40px;
         z-index: 999;
            &::before{
                 content: '';
                 position: absolute;
                 top: -23px;
-                left: 20%;
+                left: 30%;
                 height: 0;
                 width:0;
                 border: transparent 12px solid;

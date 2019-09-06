@@ -92,13 +92,13 @@ export default {
         {
           title: '早鳥優惠',
           code: '1234',
-          due_date: '2019-10-31',
+          due_date: '2020-10-31',
           percent: '80'
         },
         {
           title: '中秋優惠',
           code: 'abcd',
-          due_date: '2019-09-15',
+          due_date: '2020-09-15',
           percent: '75'
         }
       ],

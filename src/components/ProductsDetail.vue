@@ -1,13 +1,6 @@
 <template>
     <div class="container mb-4">
-        <!-- <loading :active.sync="isLoading" :is-full-page="true">
-        <template slot="before"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-        <template slot="default">
-          <i class="fas fa-chess-knight fa-3x text-primary mb-3 mx-2"></i>
-        </template>
-        <template slot="after"><i class="fas fa-cog fa-spin fa-3x text-primary"></i></template>
-       </loading> -->
-       <div class="row min-vh-100">
+       <div class="row">
          <div class="col-lg-5 text-center">
            <img :src="productDetail.imageUrl" class="detailImg">
          </div>
@@ -33,6 +26,22 @@
            </div>
          </div>
        </div>
+       <div class="w-100 border border-secondary my-4"></div>
+       <!-- 相似商品 -->
+       <span>同類型商品</span>
+       <div class="row my-3">
+        <div class="col-lg-3 col-md-4 col-6" v-for="item in sameProducts" :key="item.id">
+          <div class="card border-primary">
+            <img class="card-img-top" :src="item.imageUrl">
+            <div class="card-body">
+              <a href="#" class="card-title h5" @click.prevent="sameproductDetail(item.id)">{{item.title}}</a>
+              <p class="card-text text-truncate">{{item.description}}</p>
+              <p class="d-lg-flex justify-content-between"><s><span class="text-muted mr-2">NT{{item.origin_price | currency}}</span></s><br><span class="h5 text-primary">NT{{item.price | currency}}</span></p>
+              <a href="#" @click.prevent="sameproductDetail(item.id)">more..</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -42,6 +51,8 @@ export default {
     return {
       productId: '',
       productDetail: [],
+      allProducts: [],
+      sameProducts: [],
       productQty: '1',
       isAdding: false
     }
@@ -53,8 +64,22 @@ export default {
       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/product/${vm.productId}`
       this.$http.get(api).then((response) => {
         vm.productDetail = response.data.product
+        vm.getsameProducts()
+      })
+    },
+    getsameProducts () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
+      const vm = this
+      this.$http.get(api).then((response) => {
+        vm.allProducts = response.data.products
+        vm.sameProducts = vm.allProducts.filter((item) => {
+          return item.category === vm.productDetail.category && item.id !== vm.productDetail.id
+        })
         vm.$bus.$emit('loading: push', 'stop')
       })
+    },
+    sameproductDetail (id) {
+      this.$router.push(`/products/${id}`)
     },
     addQty () {
       const vm = this
@@ -83,6 +108,14 @@ export default {
   created () {
     this.productId = this.$route.params.Id
     this.getDetail()
+  },
+  watch: {
+    $route: {
+      handler () {
+        this.productId = this.$route.params.Id
+        this.getDetail()
+      }
+    }
   }
 }
 </script>

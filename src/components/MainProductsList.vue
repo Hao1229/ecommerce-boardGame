@@ -9,12 +9,14 @@
                     <a href="#" class="card-title h5" @click.prevent="productDetail(item.id)">{{item.title}}</a>
                     <p class="card-text text-truncate">{{item.description}}</p>
                     <p class="d-lg-flex justify-content-between"><s><span class="text-muted mr-2">NT{{item.origin_price | currency}}</span></s><br><span class="h5 text-primary">NT{{item.price | currency}}</span></p>
-                    <div class="d-lg-flex justify-content-between">
-                      <div>
-                        <button class="addtoCart border rounded-circle border-primary" @click="addtoCart(item.id)" :disabled="buttonStatus.isAdd"><i class="fas fa-cart-plus"></i></button>
-                        <i class="fas fa-cog fa-spin ml-2" v-if="status.loadingItem === item.id"></i>
+                    <div class="d-lg-flex">
+                      <div class="d-flex">
+                        <div>
+                          <button class="addtoCart border rounded-circle border-primary m-0" @click="addtoCart(item.id)" :disabled="buttonStatus.isAdd"><i class="fas fa-cart-plus"></i></button>
+                        </div>
+                        <div class="ml-2 mt-1" v-if="status.loadingItem === item.id"><i class="fas fa-cog fa-spin"></i></div>
                       </div>
-                      <a href="#" @click.prevent="productDetail(item.id)">more..</a>
+                      <a href="#" class="ml-auto" @click.prevent="productDetail(item.id)">more..</a>
                     </div>
                   </div>
                 </div>
@@ -76,5 +78,8 @@ export default {
        outline: none;
        width: 35px;
        height: 35px;
+       display: flex;
+       justify-content: center;
+       margin: 0;
      }
 </style>
