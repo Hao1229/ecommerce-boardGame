@@ -1,6 +1,6 @@
 # 電商桌遊網站練習
 
-![](https://i.imgur.com/ea9BclK.png)
+![](https://i.imgur.com/iMg2xU4.png)
 
 ## Demo
 https://hao1229.github.io/ecommerce-boardGame/#/
@@ -37,22 +37,25 @@ https://hao1229.github.io/ecommerce-boardGame/#/
 ### 前台
 前台主頁，有促銷廣告、熱門商品與店面資訊，廣告與熱門商品皆可快速連結至相關頁面
 
-![](https://i.imgur.com/vWxVUYl.png)
+![](https://i.imgur.com/bmcVYej.png)
 
-![](https://i.imgur.com/X8x9A7q.png)
+![](https://i.imgur.com/3CINc3u.png)
 
-![](https://i.imgur.com/LOfm3Kf.png)
+![](https://i.imgur.com/mON3ixs.png)
 
-前台商品頁，卡片式產品列表，可快速加入購物車，也可以點擊more或產品名查看產品詳細內容，左邊分類可以做產品顯示切換
-![](https://i.imgur.com/VAGSGyA.png)
+前台商品頁，卡片式產品列表，可快速加入購物車，也可以點擊more或產品名查看產品詳細內容，左邊分類可以做產品顯示切換。
+商品詳細頁中有同類型產品推薦。
+![](https://i.imgur.com/OexYnp3.png)
 
-![](https://i.imgur.com/7uvQm6e.png)
+![](https://i.imgur.com/s8WeEiy.png)
+
+![](https://i.imgur.com/SIQrtKO.png)
 
 前台購物車頁
-![](https://i.imgur.com/PkngOqm.png)
+![](https://i.imgur.com/pOJaHUx.png)
 
 前台資料確認頁
-![](https://i.imgur.com/S3ZkavR.png)
+![](https://i.imgur.com/jisJtq6.png)
 
 前台結帳確認頁
 ![](https://i.imgur.com/0WBkn2p.png)
