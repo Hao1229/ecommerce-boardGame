@@ -191,7 +191,7 @@ export default {
       .RWDadImg{
         max-height: auto;
         max-width: 100%;
-        box-shadow: 10px 10px 10px gray
+        box-shadow: 5px 5px 5px gray
       }
      .textNodecoration{
         text-decoration: none
